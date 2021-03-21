@@ -1,0 +1,47 @@
+{\rtf1\mac\ansicpg10001\cocoartf824\cocoasubrtf420
+{\fonttbl\f0\fmodern\fcharset77 Courier;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red191\green0\blue0;\red0\green0\blue191;
+\red96\green96\blue96;\red0\green0\blue191;\red0\green115\blue0;\red0\green115\blue0;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf2 s.boot\
+\
+(\
+	\cf3 // @@@initialize\cf2 \
+	\cf4 var\cf2  fttsize ;\
+	\cf4 var\cf2  fttBufA, fttBufB ;\
+	\cf4 var\cf2  inSynth, inVocal, vocoder ;\
+	\
+	fttsize = 512;\
+	\
+	fttBufA = \cf4 Buffer\cf2 .alloc(s,fttsize,1);\
+	fttBufB = \cf4 Buffer\cf2 .alloc(s,fttsize,1);\
+	\
+	\cf3 // @@@SynthDef\cf2 \
+	\cf4 SynthDef\cf2 (\cf5 "AudioInput"\cf2 , \{\cf4 arg\cf2  audioin=1, outbus=0;\
+		\cf4 Out\cf2 .ar(outbus, \cf6 AudioIn\cf0 .ar(audioin)\cf2 );\
+	\}).send(s);\
+	\
+	\cf4 SynthDef\cf2 (\cf5 "SawSynth"\cf2 , \{\cf4 arg\cf2  audioin=1, outbus=0;\
+	\cf4 var\cf2  output, freq, \cf0 hasFreq\cf2 ;\
+		# freq, hasFreq = \cf4 Pitch\cf2 .kr(\cf6 AudioIn\cf0 .ar(audioin)\cf2 , ampThreshold: 0.02, median: 7);\
+		freq = freq.cpsmidi.round(1).midicps*1;\
+		output = HPF.ar(\cf4 Saw\cf2 .ar(freq, 0.3) + \cf6 Saw\cf0 .ar(freq*0.5, 0.4), freq * 1.5\cf2 );\
+	\cf4 Out\cf2 .ar(outbus,output);\
+	\}).\cf0 send\cf2 (s);\
+	\
+	\cf4 SynthDef\cf2 (\cf5 "FFTVocoder"\cf2 , \{\cf4 arg\cf2  \cf0 modin=0, \cf2 carin=1, outbus=0;\
+	\cf4 var\cf2  output, \cf0 input,\cf2  chainA, chainB, chainC;\
+	\cf0 	input = \cf6 In\cf0 .ar(modin, 1);\cf2 \
+\cf0 		chainA = \cf6 FFT\cf0 (fttBufA.bufnum, (HPF.ar(HPF.ar(input, 3000, 2)+(input*0.4), 100)) );\cf2 \
+\cf0 		chainB = \cf6 FFT\cf0 (fttBufB.bufnum, \cf6 In\cf0 .ar(carin, 1));\cf2 \
+		chainC = \cf4 PV_MagMul\cf2 (chainB, chainA);\
+		output = Limiter.ar(\cf4 IFFT\cf2 (chainC), 1, 0.01);	\cf4 ReplaceOut\cf2 .ar(outbus,[output,output]);\
+	\}).\cf0 send\cf2 (s);\
+	\
+	\
+	\cf3 // @@@Synthsize\cf2 \
+	inVocal = \cf4 Synth\cf2 .new(\cf5 "AudioInput"\cf2 , [\cf7 \\audioin\cf2 , 1, \cf7 \\outbus\cf2 , 0], s);\
+	inSynth = \cf4 Synth\cf2 .new(\cf5 "SawSynth"\cf2 , [\cf7 \\audioin\cf2 , 1, \cf7 \\outbus\cf2 , 1], inVocal, \cf7 \\addAfter\cf2 );\
+	vocoder = \cf4 Synth\cf2 .new(\cf5 "FFTVocoder"\cf2 , [\cf7 \\outbus\cf2 , 0, \cf8 \\modin\cf0 , 0,\cf2  \cf7 \\carin\cf2 , 1 ], inSynth, \cf7 \\addAfter\cf2 );\
+)}

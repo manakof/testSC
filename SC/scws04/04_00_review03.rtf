@@ -1,0 +1,116 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1138\cocoasubrtf230
+{\fonttbl\f0\fnil\fcharset128 HiraKakuProN-W3;}
+{\colortbl;\red255\green255\blue255;\red191\green0\blue0;\red0\green0\blue191;\red96\green96\blue96;
+\red0\green115\blue0;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs24 \cf2 // SuperCollider workshop at WOMB LOUNGE 2012\cf0 \
+\
+\cf2 // SC\'82\'cd\'83\'76\'83\'8d\'83\'4f\'83\'89\'83\'7e\'83\'93\'83\'4f\'8c\'be\'8c\'ea\'82\'c5\'82\'a0\'82\'e9\'82\'cc\'82\'c5\'81\'41\'8a\'67\'92\'a3\'90\'ab\'82\'aa\'8d\'82\'82\'a2\cf0 \
+\
+\
+\'82\'e6\'82\'ad\'82\'a0\'82\'e9\'8e\'bf\'96\'e2\
+\
+\'81\'45Nes2 \'83\'4e\'83\'89\'83\'58\'82\'cc\'93\'fc\'8e\'e8\'90\'e6\
+	http://fredrikolofsson.com/ \'82\'cc\
+	code > supercollider > plugins/ugens >f0plugins \'82\'f0\'83\'5f\'83\'45\'83\'93\'83\'8d\'81\'5b\'83\'68\
+\
+\'81\'45Recording \'82\'c9\'82\'c2\'82\'a2\'82\'c4\
+	sc_recordingOptions.rtf \'82\'f0\'8e\'51\'8f\'c6\
+\
+\cf2 /////////////////////////////////////////////////////////\cf0 \
+\'83\'52\'81\'5b\'83\'66\'83\'42\'83\'93\'83\'4f\'82\'cc\'83\'41\'83\'68\'83\'6f\'83\'43\'83\'58\
+\
+\'81\'45\'83\'54\'81\'5b\'83\'6f\'81\'5b\'82\'cc\'8b\'4e\'93\'ae\'96\'59\'82\'ea\'82\'f0\'96\'68\'82\'ae\
+\
+	s = Server.local;\
+	\
+	\cf2 // wait for boot \'82\'f0\'8e\'67\'82\'a4\'82\'c6\'81\'41\'83\'54\'81\'5b\'83\'6f\'81\'5b\'82\'f0\'8b\'4e\'93\'ae\'8c\'e3\'82\'c9\'8e\'c0\'8d\'73\'82\'b5\'82\'c4\'82\'ad\'82\'ea\'82\'e9\cf0 \
+	s.waitForBoot\{\
+		\
+		Pbind().play;\
+	\};\
+	\
+\cf2 // - - - - - - - - - - - -\cf0 \
+\
+\'81\'45\'83\'8c\'83\'78\'83\'8b\'83\'81\'81\'5b\'83\'5e\'82\'cc\'95\'5c\'8e\'a6\
+	s.meter;\
+	\
+	(// sample from "SC2-examples_1.scd\
+	\{\
+	\cf2 // Klank - bank of resonators excited by impulses\cf0 \
+	\cf3 var\cf0  n, p, z;\
+	n = 5;	\cf2 // number of simultaneous instruments\cf0 \
+	p = 15;	\cf2 // number of partials per instrument\cf0 \
+		z = `[	\cf2 // filter bank specification :\cf0 \
+					\cf3 Array\cf0 .fill(p, \{ 80 + 10000.0.linrand\} ),	\cf2 // frequencies\cf0 \
+					\cf3 Array\cf0 .fill(p, \{ 1.0.rand2 \}), 			\cf2 // amplitudes\cf0 \
+					\cf3 Array\cf0 .fill(p, \{ 0.2 + 8.0.rand \} )		\cf2 // ring times\cf0 \
+				];\
+			\cf3 Pan2\cf0 .ar(\
+				\cf3 Klank\cf0 .ar(z, \cf3 Dust\cf0 .ar(0.7, 0.04)),\
+				1.0.rand2\
+			)\
+	\}.play;\
+	)\
+\
+\cf2 // - - - - - - - - - - - -\cf0 \
+\
+\'81\'45\'83\'4f\'83\'8d\'81\'5b\'83\'6f\'83\'8b\'95\'cf\'90\'94\'82\'cc\'97\'98\'97\'70\
+SC\'82\'c5\'82\'cc\'82\'50\'95\'b6\'8e\'9a\'83\'4f\'83\'8d\'81\'5b\'83\'6f\'83\'8b\'95\'cf\'90\'94\'82\'cd\'81\'41\'82\'c8\'82\'f1\'82\'c6\'82\'c8\'82\'ad\'81\'48\'8c\'88\'82\'dc\'82\'e8\'82\'aa\'82\'a0\'82\'e9\'81\'42\
+\
+	s = Server...\
+	b = Buffer\'81\'63\
+	o = OSCResponder \'81\'63.\
+	t = Task\'81\'63\
+	r = Routine \'81\'63.\
+\
+\'91\'e5\'82\'ab\'82\'c8\'83\'76\'83\'8d\'83\'4f\'83\'89\'83\'80\'82\'f0\'8f\'91\'82\'a2\'82\'c4\'82\'a2\'82\'ad\'82\'c6\'83\'67\'83\'89\'83\'75\'83\'8b\'82\'aa\'8b\'4e\'82\'b1\'82\'e9\'8e\'96\'82\'e0\'82\'a0\'82\'e9\'82\'cc\'82\'c5\'81\'41\
+\'8e\'a9\'95\'aa\'82\'c5\'95\'cf\'90\'94\'96\'bc\'82\'f0\'82\'c2\'82\'af\'82\'e9\'82\'c6\'82\'e6\'82\'a2\'81\'42\
+\
+	a = 100;\
+	\
+	\cf2 // \'95\'ca\'82\'cc\'83\'76\'83\'8d\'83\'4f\'83\'89\'83\'80\cf0 \
+	a = 0.5; \cf2 // \'8f\'e3\'8f\'91\'82\'ab\'82\'b3\'82\'ea\'82\'c4\'82\'b5\'82\'dc\'82\'a4\cf0 \
+	a;\
+		\
+	~myFreq = 100;\
+	\cf2 // \'95\'ca\'82\'cc\'83\'76\'83\'8d\'83\'4f\'83\'89\'83\'80\cf0 \
+	~myAmp = 0.5;\
+\cf2 	\
+\
+/////////////////////////////////////////////////////////\cf0 \
+\cf2 \
+OSC\'82\'c5\'82\'cc\'92\'ca\'90\'4d\'82\'cc\'82\'a8\'82\'b3\'82\'e7\'82\'a2\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+\cf0 \
+\cf2 // IP\'83\'41\'83\'68\'83\'8c\'83\'58\'82\'c6port\'94\'d4\'8d\'86\'82\'f0\'8e\'77\'92\'e8\'82\'b5\'82\'c4\'91\'97\'90\'4d\cf0 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 	n = \cf3 NetAddr\cf0 (\cf4 "127.0.0.1"\cf0 , 57120);	\cf2 // \'8e\'a9\'95\'aa\'82\'cc\'83\'52\'83\'93\'83\'73\'83\'85\'81\'5b\'83\'5e\'82\'ccport57120\'82\'d6\'91\'97\'90\'4d\cf0 \
+	\
+	\cf2 // \'83\'52\'83\'7d\'83\'93\'83\'68\'82\'cc\'96\'bc\'91\'4f\'82\'c6\'81\'41\'82\'a2\'82\'ad\'82\'c2\'82\'a9\'82\'cc\'83\'70\'83\'89\'83\'81\'81\'5b\'83\'5e\'82\'f0\'91\'97\'82\'e8\'82\'dc\'82\'b7\'81\'42\cf0 \
+	n.sendMsg( \cf4 "/chat"\cf0 , \cf4 "How old are you?"\cf0  );  \cf2 // \'82\'50\'82\'c2\'82\'cc\'95\'b6\'8e\'9a\'97\'f1\'82\'f0\'91\'97\'82\'e9\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+\cf0 	n.sendMsg( \cf4 "/chat"\cf0 , \cf4 "I'm"\cf0 , 12, \cf4 "years old."\cf0  ); \cf2 // \'82\'51\'82\'c2\'82\'cc\'95\'b6\'8e\'9a\'97\'f1\'82\'c6\'82\'50\'82\'c2\'82\'cc\'90\'94\'8e\'9a\'82\'f0\'91\'97\'82\'e9 \cf0 \
+	\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 \
+\cf2 /////////////////////////////////////////////////////////\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+\cf0 \
+\cf2 //OSCresponderNode\'82\'c5OSC\'82\'cc\'8e\'f3\'90\'4d\'82\'f0\'8d\'73\'82\'a4\cf0 \
+\
+	(\
+	n = \cf3 NetAddr\cf0 ( \cf4 "localhost"\cf0 , 57120 ); // "localhost"\'82\'cd\'8e\'a9\'95\'aa\'8e\'a9\'90\'67\'82\'cc\'83\'52\'83\'93\'83\'73\'83\'85\'81\'5b\'83\'5e\'82\'f0\'8e\'77\'82\'b7\'95\'b6\'8e\'9a\'97\'f1\
+	o = \cf3 OSCresponderNode\cf0 ( n, \cf5 '/chat'\cf0 , \{ \cf3 |t, r, msg|\cf0 \
+\pard\pardeftab560
+\cf0 		 msg[1].postln\
+	\}).add;\
+	)\
+\
+o.remove; \cf2 // Responder\'82\'f0\'8d\'ed\'8f\'9c\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 \
+\
+}

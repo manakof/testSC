@@ -1,0 +1,41 @@
+(
+// Create a window.
+w = SCWindow("ColorTone", Rect(0, 0, 320, 480));
+w.view.background = Color(0,0,0);
+b = SCButton(w, Rect(10,10,20,20))
+	.states_([
+		["X", Color.white, Color.gray],
+	])
+	.action_(
+	{
+		r.remove;
+		w.close;
+	});
+w.front;
+
+// Define a synth
+SynthDef(\SawPerc, 
+{ arg note = 57;
+	Out.ar(0, Pan2.ar(
+	Saw.ar(note.midicps) * EnvGen.ar(Env.perc, doneAction:2),
+	0));
+}).store;
+
+// Define "play" responder.
+r = OSCresponder(nil,"colorplay",
+{
+	arg time,responder,msg;
+	var note, hue, brightness, color;
+	note = msg[1];	// midi note number
+	Synth(\SawPerc, [\note, note]);
+	hue = (note % 12) / 12;
+	brightness = (floor(note / 12) / 10);
+	color = Color.hsv(hue, 1.0-brightness, 1.0, 1.0);
+	{w.view.background = color}.defer;
+	
+	// add clock
+	AppClock.sched(0.5,{
+	w.view.background = Color.black;
+	});
+}).add;
+)

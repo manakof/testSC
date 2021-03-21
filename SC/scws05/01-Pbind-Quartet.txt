@@ -1,0 +1,4 @@
+Pbind(\midinote, 55, \dur, 0.6).play;
+Pbind(\midinote, 67, \dur, 0.5).play;
+Pbind(\midinote, 71, \dur, 0.4).play;
+Pbind(\midinote, 74, \dur, 0.25).play;

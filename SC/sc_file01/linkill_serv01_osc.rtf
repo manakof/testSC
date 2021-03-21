@@ -1,0 +1,50 @@
+{\rtf1\ansi\ansicpg932\cocoartf1038\cocoasubrtf360
+{\fonttbl\f0\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue191;\red96\green96\blue96;\red0\green115\blue0;
+}
+\vieww10500\viewh9600\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs22 \cf0 (\
+\cf2 var\cf0  play=\cf2 false\cf0 ;\
+var iflag=0;\
+\
+\cf2 OSCresponderNode\cf0 (\cf2 nil\cf0 , \cf3 "/toggle"\cf0 ,\{\
+	\cf2 arg\cf0  time, resp, msg;\
+	if(msg[1] == 1,\
+	\{\
+		msg.postln;\
+		if(iflag == 3,\{\
+			\cf2 Synth\cf0 (\cf3 "hz_4410"\cf0 ,[\cf4 \\outBus\cf0 ,10]);\
+			play=\cf2 true\cf0 ;\
+			iflag = 0;\
+		\} ,\{\
+		\cf2 Synth\cf0 (\cf3 "hz_4410"\cf0 ,[\cf4 \\outBus\cf0 ,0]);\
+		play=\cf2 true\cf0 ;\
+		iflag = (iflag+1);\
+		postln(iflag);\
+		\})\
+	\},\
+	\{\
+		play=\cf2 false\cf0 ;\
+	\})\
+\}).add;\
+)\
+(\
+\cf2 var\cf0  play=\cf2 false\cf0 ;\
+\
+\cf2 OSCresponderNode\cf0 (\cf2 nil\cf0 ,\cf3 "/noize"\cf0 ,\
+\{\
+	\cf2 arg\cf0  time, resp, msg;\
+	if(msg[1] == 1,\
+	\{\
+		msg.postln; \
+		\cf2 Synth\cf0 (\cf3 "hz_50_s"\cf0 ,[\cf4 \\outBus\cf0 ,0]);\
+		play=\cf2 true\cf0 ;\
+	\},\
+	\{\
+		play=\cf2 false\cf0 ;\
+	\}); \
+\}).add;\
+)\
+}

@@ -1,0 +1,28 @@
+{\rtf1\ansi\ansicpg932\cocoartf1138\cocoasubrtf320
+{\fonttbl\f0\fnil\fcharset128 HiraKakuProN-W3;}
+{\colortbl;\red255\green255\blue255;\red191\green0\blue0;\red0\green0\blue0;\red0\green0\blue191;
+\red0\green115\blue0;\red96\green96\blue96;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs26 \cf2 //SuperCollider Code\cf3 \
+\cf2 /////// SC WOMB 2012 02 28 /////////////////////////////////////////\cf3 \
+\cf2 /////// SCWomb2012_OSCRecive_audiovisual_Example_02 //////////\cf3 \
+\
+\cf2 //SynthDef\'82\'f0\'93\'6f\'98\'5e\cf3 \
+(\
+\cf4 SynthDef\cf3 ( \cf5 \\testWormSynth\cf3 , \{ \cf4 arg\cf3  note, moNote;\
+	\cf4 var\cf3  tNote, tMoNote ,src;\
+	tNote = note.linlin( 0, 800, 40, 127 ).midicps;\
+	tMoNote = moNote.linlin( 0, 600, 40, 127).midicps;\
+	src = \cf4 PMOsc\cf3 .ar( tNote , tMoNote, 12, 0, 0.3 ).dup;\
+	\cf4 Out\cf3 .ar( 0, src );\
+\}).store\
+)\
+\pard\pardeftab560
+\cf3 \
+\cf2 //Node ID 1001\'82\'c9testWormSynth\'82\'f0\'92\'c7\'89\'c1\cf3 \
+s.sendMsg( \cf6 "/s_new"\cf3 , \cf5 \\testWormSynth\cf3  ,1001, 1 , 0 ,1 );\
+\
+\
+\cf2 //\'83\'6d\'81\'5b\'83\'68\'82\'f0\'89\'f0\'95\'fa\cf3 \
+s.sendMsg( \cf6 "/n_free"\cf3 , 1001 );}

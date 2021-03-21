@@ -1,0 +1,92 @@
+{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf440
+{\fonttbl\f0\fnil\fcharset77 Monaco;}
+{\colortbl;\red255\green255\blue255;\red191\green0\blue0;\red0\green0\blue191;\red0\green115\blue0;
+\red96\green96\blue96;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs18 \cf0 ( \cf2 // WriteSynthDef\cf0 \
+a = \cf3 SynthDef\cf0 (\cf4 \\test\cf0 ,\{\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf3 var\cf0  out;\
+	out = \cf3 SinOsc\cf0 .ar(440);\
+	4.do\{out = out + \cf3 SinOsc\cf0 .ar(440);\}\
+\}).load(s);\
+\
+a.dumpUGens;\
+"".postln;\
+);\
+\
+\
+( \cf2 // Functions\cf0 \
+\
+~createCode = \{\cf3 |\cf0 def\cf3 |\cf0 \
+		\cf3 var\cf0  code=\cf5 ""\cf0 , vars=\cf5 ""\cf0 ;\
+				\
+		def.children.do \{\cf3 arg\cf0  ugen, i;\
+			\cf3 var\cf0  inputs = \cf5 ""\cf0 , varName;\
+			\
+			if (ugen.inputs.notNil) \{\
+				ugen.inputs.do \{\cf3 |in, i|\cf0 \
+					inputs = inputs ++\
+					\
+					if (in.respondsTo(\cf4 \\dumpName\cf0 ))\{ \cf5 "u"\cf0  ++ in.synthIndex.asString \}\{ in \};\
+					if(ugen.inputs.size-1 > i)\{ inputs = inputs ++ \cf5 ", "\cf0 \};\
+				\};\
+			\};\
+			\
+			varName = \cf5 "u"\cf0  ++ ugen.synthIndex.asString;\
+			\
+			vars = vars ++ varName;\
+			if(def.children.size-1 > i)\{ vars = vars ++ \cf5 ", "\cf0 \};\
+			\
+			code = format(\cf5 "%\\t% = %.new(%);\\n"\cf0 ,\
+				code,\
+				varName,\
+				ugen.class.asString,\
+				inputs);\
+		\};\
+		\
+		code = format(\cf5 "SynthDef('%', \{\\n\\tvar %;\\n%\});"\cf0 ,\
+			def.name,\
+			vars,\
+			code);\
+	\};\
+\
+\
+~readGetDescsList = \{\cf3 |path|\cf0 \
+		\cf3 var\cf0  keepDefs=\cf3 true\cf0 ;\
+		\cf3 var\cf0  list;\
+		\cf3 var\cf0  numDefs;\
+		\
+		list = \cf3 List\cf0 .new;\
+		path.pathMatch.do \{ \cf3 |filename|\cf0 \
+			\cf3 var\cf0  stream, result;\
+			stream = \cf3 File\cf0 (filename, \cf5 "r"\cf0 );\
+			\
+			protect \{\
+				stream.getInt32; \cf2 // 'SCgf'\cf0 \
+				stream.getInt32; \cf2 // version\cf0 \
+				numDefs = stream.getInt16;\
+				\
+				numDefs.do \{\
+					\cf3 var\cf0  desc;\
+					desc = \cf3 SynthDesc\cf0 .new.readSynthDef(stream, keepDefs);\
+					list.add(desc);\
+				\}\
+			\}\{\
+				stream.close;\
+			\};\
+		\};\
+		\
+		list\
+	\};\
+\
+);\
+\
+( \cf2 // test\cf0 \
+~path = \cf3 SynthDef\cf0 .synthDefDir ++ \cf5 "test.scsyndef"\cf0 ;\
+~descs = ~readGetDescsList.(~path);\
+~descs.do\{\cf3 |desc|\cf0  ~createCode.(desc.def).postln \};\
+\
+""\
+);}

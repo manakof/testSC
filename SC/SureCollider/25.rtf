@@ -1,0 +1,215 @@
+{\rtf1\mac\ansicpg10001\cocoartf824\cocoasubrtf420
+{\fonttbl\f0\fnil\fcharset77 AndaleMono;\f1\fnil\fcharset77 Monaco;}
+{\colortbl;\red255\green255\blue255;\red95\green176\blue49;\red255\green128\blue0;\red48\green36\blue238;
+\red76\green165\blue177;\red255\green0\blue0;\red255\green0\blue255;\red52\green120\blue174;\red128\green0\blue128;
+\red0\green48\blue170;\red0\green0\blue191;\red0\green0\blue0;\red0\green0\blue191;\red96\green96\blue96;
+\red0\green115\blue0;\red96\green96\blue96;\red0\green115\blue0;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc\pardirnatural
+
+\f0\fs28 \cf0 // \cf2 SuperCollider.jp\cf3  - \cf4 Code Remix Contest\cf0  //\
+// \cf5 Gymnopedie\cf3 *\cf6 U\cf7 nderachiever\cf0  \cf7 Remix\cf0  //\
+// \cf8 Composed By:\cf3  \cf9 Erik Satie\cf0  //\
+// \cf10 Remixed By:\cf3  \cf6 ChineseRoom\cf0  //
+\fs24 \cf11 \
+\pard\pardeftab720\sl280\ql\qnatural
+\cf12 \
+(\
+	\cf13 var\cf12  gym_synth, gym_seq;\
+		\
+	gym_synth = \{		\
+		\cf13 SynthDef\cf12 (\cf14 "
+\f1\fs20 synth_melody
+\f0\fs24 "\cf12 , \{\
+			\cf13 arg\cf12  freq=440, gate=1, amp=1.0, env, source1,\cf0  source2,\cf12  pan = 0.0 ;\
+			\cf0 env = \cf11 EnvGen\cf0 .kr(\cf11 Env\cf0 .adsr(0.001, 2, 0.0, 0.1, 1, -20), gate, doneAction:2);\cf12 \
+			source1 = \cf13 Pan2\cf12 .ar( \cf13 Pulse\cf12 .ar(freq, 0.51, amp) * \cf0 env );\cf12 \
+			\cf0 2.do(\{source1 = AllpassN.ar(source1, 0.08, [Exp\cf11 Rand\cf0 (0.01,0.08),Exp\cf11 Rand\cf0 (0.01,0.08)], 2)\});\cf12 \
+			\cf0 source2\cf12  = \cf0 source1 + \cf11 Pan2\cf0 .ar( \cf11 Pulse\cf0 .ar(freq*2, 0.51, amp) * env );\cf12 \
+			\cf13 Out\cf12 .ar(0, \cf0 source2\cf12 );\
+		\}).store;\
+\
+		\
+		\cf13 SynthDef\cf12 (\cf14 "
+\f1\fs20 synth_bass
+\f0\fs24 "\cf12 , \{\
+			\cf13 arg\cf12  freq=440, gate=1, amp=1.0, source, pan = 0.0 ;\
+			source = \
+			\cf13 Pan2\cf12 .ar(\
+			\cf13 Pulse\cf12 .ar(freq, [0.6, 0.4], amp * 0.8) + \cf13 SinOsc\cf12 .ar(freq, 0, amp) * \
+			\cf13 EnvGen\cf12 .kr(\cf13 Env\cf12 .adsr(0.01, 0.2, 0.9, 0.01, 1, -6), gate, doneAction:2), pan );\
+			\cf13 Out\cf12 .ar(0, source);\
+		\}).store;\
+		\
+		\cf13 SynthDef\cf12 (\cf14 "
+\f1\fs20 synth_chord
+\f0\fs24 "\cf12 , \{\
+			\cf13 arg\cf12  freq=440, gate=1, amp=1.0, source, env1, env2, pan = 0.0 ;\
+			\
+			env1 = \cf13 EnvGen\cf12 .kr(\cf13 Env\cf12 .adsr(0.01, 2, 0.0, 0.6, 1, -6), gate, doneAction:2);\
+			env2 = \cf13 EnvGen\cf12 .kr(\cf13 Env\cf12 .adsr(0.05, 0.3, 0.0, 0.6, 1, \cf15 'exponential'\cf12 ), gate, \cf13 MouseY\cf12 .kr(12000, 10, 0, 0.2), 200);\
+\
+			source = \cf13 Pan2\cf12 .ar(\cf13 LPF\cf12 .ar(\cf13 Pulse\cf12 .ar(freq, \cf13 SinOsc\cf12 .ar([2.2, 2.4], [1.0, 0.3], 0.3, 0.5), amp), env2) * env1, pan);\
+			\cf13 Out\cf12 .ar(0, source);\
+		\}).store;\
+\
+\cf0 \
+		\cf11 SynthDef\cf0 (\cf16 "
+\f1\fs20 synth_chord2
+\f0\fs24 "\cf0 , \{\
+			\cf11 arg\cf0  freq=440, gate=1, amp=1.0, source, env1, env2, pan = 0.0 ;\
+			\
+			env1 = \cf11 EnvGen\cf0 .kr(\cf11 Env\cf0 .adsr(0.001, 1, 0.0, 0.6, 1, -6), gate, doneAction:2);\
+			env2 = \cf11 EnvGen\cf0 .kr(\cf11 Env\cf0 .adsr(0.01, 0.2, 0.0, 0.2, 1, \cf11 Rand\cf0 (-50,-10)), gate, Exp\cf11 Rand\cf0 (40,13000), 400);\
+			source = \cf11 Pan2\cf0 .ar(\cf11 LPF\cf0 .ar(LF\cf11 Saw\cf0 .ar(freq, [Rand(0,1),Rand(0,1)], amp), env2) * env1, pan);\
+			2.do(\{source = AllpassN.ar(source, 0.07, Exp\cf11 Rand\cf0 (0.01,0.07), 3)\});\
+			\cf11 Out\cf0 .ar(0, source);\
+		\}).store;\cf12 \
+\
+		\cf13 SynthDef\cf12 (\cf14 "
+\f1\fs20 synth_klock
+\f0\fs24 "\cf12 , \{\
+			\cf13 arg\cf12  freq=440, gate=1, amp=1.0, source, env1, pan = 0.0,  fmratio = 0.5 ;\
+			env1 = \cf13 EnvGen\cf12 .kr(\cf13 Env\cf12 .perc(0.0001, 0.018, 1, 10), gate, 1, 0, doneAction:2);\
+			source = \cf13 Pan2\cf12 .ar( \cf13 HPF\cf12 .ar(\cf13 SinOsc\cf12 .ar(\cf13 SinOsc\cf12 .ar(freq*fmratio, 0, env1*2000 + 5000, freq), 0.51, amp), 3000), pan ) * env1;\
+			\cf13 Out\cf12 .ar(0, source);\
+		\}).store;\
+\
+		\cf13 SynthDef\cf12 (\cf14 "
+\f1\fs20 synth_kroll
+\f0\fs24 "\cf12 , \{\
+			\cf13 arg\cf12  freq=440, gate=1, amp=1.0, source, osc, env1, pan = 0.0,  fmratio = 0.5 ;\
+			env1 = \cf13 EnvGen\cf12 .kr(\cf13 Env\cf12 .perc(0.0001, 0.1, 1, -6), gate, 1, 0);\
+			\cf0 osc\cf12  = \cf13 Pan2\cf12 .ar( \cf13 SinOsc\cf12 .ar(\cf11 SinOsc\cf0 .ar(freq*2, 0, env1*9000+2000, freq)\cf12 , 0.51, amp), pan ) * env1;\
+			\cf0 source = osc + AllpassN.ar(AllpassN.ar(osc, 1, Exp\cf11 Rand\cf0 (0.02,0.3), 2), 1, Exp\cf11 Rand\cf0 (0.02,0.3), 2) * Line.kr(1,0,1.5, doneAction:2);\cf12 \
+			\cf13 Out\cf12 .ar(0, source);\
+		\}).store;\
+				\
+		\cf13 SynthDef\cf12 (\cf14 "
+\f1\fs20 drum_kick
+\f0\fs24 "\cf12 , \{\
+			\cf13 arg\cf12  freq=440, gate=1, amp=1.0, source, pan = 0.0 ;\
+			source = \
+			\cf13 Pan2\cf12 .ar(\
+			\cf13 SinOsc\cf12 .ar(\cf13 EnvGen\cf12 .kr(\cf13 Env\cf12 .perc(0.0001, 2.5, 1, -200), gate, 1000, 45, doneAction:2), 1, 1) +\
+			((\cf13 BPF\cf12 .ar([\cf13 GrayNoise\cf12 .ar(8),\cf13 GrayNoise\cf12 .ar(8)],\cf13 EnvGen\cf12 .kr(\cf13 Env\cf12 .perc(0.001, 0.3, 1, -200), gate, 6000, 70), 1.5)).distort * \cf13 Line\cf12 .kr(0.3,0,0.1))\
+			* \
+			\cf13 EnvGen\cf12 .kr(\cf13 Env\cf12 .perc(0.001, 0.22, amp, 8)),0);\
+			\cf13 Out\cf12 .ar(0, source);\
+		\}).store;\
+		\
+		\cf13 SynthDef\cf12 (\cf14 "
+\f1\fs20 drum_shaker
+\f0\fs24 "\cf12 , \{\
+			\cf13 arg\cf12  freq=440, gate=1, amp=1.0, source, pan = 0.0 ;\
+			source = \
+			\cf13 Pan2\cf12 .ar(\cf13 BPF\cf12 .ar(\cf13 WhiteNoise\cf12 .ar(16),10000,0.2).distort * \cf13 EnvGen\cf12 .kr(\cf13 Env\cf12 .perc( (1-amp*0.02)+0.01 , ((amp*amp)*1.0 + 0.1), amp*amp*0.8+0.2, -6), gate, doneAction:2),\cf13 Rand\cf12 (-0.3,0.3));\
+			\cf13 Out\cf12 .ar(0, source);\
+		\}).store;\
+			\
+		\cf13 SynthDef\cf12 (\cf14 "
+\f1\fs20 drum_hihat
+\f0\fs24 "\cf12 , \{\
+			\cf13 arg\cf12  freq=440, gate=1, amp=1.0, source, pan = 0.0 ;\
+			source = \
+			\cf11 Pan2\cf0 .ar(\cf11 BPF\cf0 .ar(\cf11 LFPulse\cf0 .ar(\cf11 BPF\cf0 .ar(\cf11 WhiteNoise\cf0 .ar(5),1200,0.1).distort * 8000 + 6600, 0.7),7000,1) * \cf11 EnvGen\cf0 .kr(\cf11 Env\cf0 .perc(0.01, 0.4, 1, -6), doneAction:2),0);\
+			\cf13 Out\cf12 .ar(0, source);\
+		\}).store;\
+			\cf0 \
+		\cf11 SynthDef\cf0 (\cf16 "
+\f1\fs20 drum_clap
+\f0\fs24 "\cf0 , \{\
+			\cf11 arg\cf0  freq=440, gate=1, amp=1.0, source, pan = 0.0 ;\
+			source = \
+			\cf11 Pan2\cf0 .ar((\cf11 BPF\cf0 .ar(\cf11 BPF\cf0 .ar(\cf11 WhiteNoise\cf0 .ar(16),2300,0.3),8300,0.3)*5).distort * \cf11 EnvGen\cf0 .kr(\cf11 Env\cf0 .perc(0.01, 0.1, 1, 0), doneAction:2),0);\
+			\
+			\cf11 Out\cf0 .ar(0, source);\
+		\}).store;\cf12 \
+	\};\
+	\
+	gym_seq = \{\
+		\cf13 var\cf12  clock, melody, bass, chord, \cf0 chord2,\cf12  fkick, shaker, hihat, \cf0 clap,\cf12  klock, kroll, sfl;\
+		sfl = 1.0/8.0;\
+		\
+		clock = \cf13 TempoClock\cf12 (120/60);\
+		\
+		melody = \cf13 Pbind\cf12 (\
+		\cf15 \\instrument\cf12 , \cf15 \\synth_melody\cf12 ,\
+		\cf15 \\amp\cf12 , 0.3,\
+		\cf15 \\dur\cf12 , \cf13 Pseq\cf12 ([  2, 2, 2, 2, 2, 2, 2, 2, 2, 6, 8, 4, 8, 4, ]/3.0,\cf13 inf\cf12 ),\
+		\cf15 \\midinote\cf12 , \cf13 Pseq\cf12 ([ \\, 66, 69, 67, 66, 61, 59, 61, 62, 57, 59, \\, 71, \\] 	+ 12, \cf13 inf\cf12 )\
+		);\
+		\
+		bass = \cf13 Pbind\cf12 (\
+		\cf15 \\instrument\cf12 , \cf15 \\synth_bass\cf12 ,\
+		\cf15 \\amp\cf12 , 0.3,\
+		\cf15 \\dur\cf12 , \cf13 Pseq\cf12 ([ 2, 1+sfl, 1-sfl, 2, 1+sfl, 0.4, 0.6-sfl]/4.0,\cf13 inf\cf12 ),\
+		\cf15 \\midinote\cf12 , \cf13 Pseq\cf12 ([ 64, \\, 64, \\, 71, 76, \\, 59, \\, 59, \\, 62, 66, \\ ] - 24, \cf13 inf\cf12 )\
+		);\
+		\
+		chord = \cf13 Pbind\cf12 (\
+		\cf15 \\instrument\cf12 , \cf15 \\synth_chord\cf12 ,\
+		\cf15 \\amp\cf12 , 0.2,\
+		\cf15 \\dur\cf12 , \cf13 Pseq\cf12 ([3.0+sfl,5.0-sfl;]/4,\cf13 inf\cf12 ),\
+		\cf15 \\midinote\cf12 , \cf13 Pseq\cf12 ([\\,[59,62,66],\\, [57,61,66]] , \cf13 inf\cf12 )\
+		);\
+\cf0 		\
+		chord2 = \cf11 Pbind\cf0 (\
+		\cf17 \\instrument\cf0 , \cf17 \\synth_chord2\cf0 ,\
+		\cf17 \\amp\cf0 , 0.2,\
+		\cf17 \\dur\cf0 , \cf11 Pseq\cf0 ([2]/4,\cf11 inf\cf0 ),\
+		\cf17 \\midinote\cf0 , \cf11 Pseq\cf0 ([[55,62,66],[59,62,69],[55,62,66]+12,[59,62,69],[54,61,66],[57,61,69],[54,61,66],[57,61,69]] , \cf11 inf\cf0 )\
+		);\
+		\cf12 	\
+		fkick = \cf13 Pbind\cf12 (\
+		\cf15 \\instrument\cf12 , \cf15 \\drum_kick\cf12 ,\
+		\cf15 \\amp\cf12 , 0.7,\
+		\cf15 \\dur\cf12 , \cf13 Pseq\cf12 ([1, 1],\cf13 inf\cf12 ),\
+		\cf15 \\midinote\cf12 , 3\
+		);\
+	\
+		shaker = \cf13 Pbind\cf12 (\
+		\cf15 \\instrument\cf12 , \cf15 \\drum_shaker\cf12 ,\
+		\cf15 \\amp\cf12 , \cf13 Pseq\cf12 ([ 0.3, 0.1, 1.0, 0.4, 0.6, 0.3, 1.0, 0.4 ]/4,\cf13 inf\cf12 ),\
+		\cf15 \\dur\cf12 , \cf13 Pseq\cf12 ([1+sfl, 1-sfl]/4,\cf13 inf\cf12 ),\
+		\cf15 \\midinote\cf12 , 3\
+		);\
+			\
+		hihat = \cf13 Pbind\cf12 (\
+		\cf15 \\instrument\cf12 , \cf15 \\drum_hihat\cf12 ,\
+		\cf15 \\amp\cf12 , 0.2,\
+		\cf15 \\dur\cf12 , \cf13 Pseq\cf12 ([1, 1]/2,\cf13 inf\cf12 ),\
+		\cf15 \\midinote\cf12 , \cf13 Pseq\cf12 ([\\, 1],\cf13 inf\cf12 )\
+		);\
+		\cf0 	\
+		clap = \cf11 Pbind\cf0 (\
+		\cf17 \\instrument\cf0 , \cf17 \\drum_clap\cf0 ,\
+		\cf17 \\amp\cf0 , 0.15,\
+		\cf17 \\dur\cf0 , \cf11 Pseq\cf0 ([1, 1],\cf11 inf\cf0 ),\
+		\cf17 \\midinote\cf0 , \cf11 Pseq\cf0 ([\\, 1],\cf11 inf\cf0 )\
+		);\
+				\cf12 		\
+		klock = \cf13 Pbind\cf12 (\
+		\cf15 \\instrument\cf12 , \cf15 \\synth_klock\cf12 ,\
+		\cf15 \\amp\cf12 , 0.4,\
+		\cf15 \\dur\cf12 , \cf13 Pseq\cf12 ([  4, 1+sfl, 1-sfl, 1+sfl, 1-sfl, ]/4.0,\cf13 inf\cf12 ),\
+		\cf15 \\midinote\cf12 , \cf13 Pseq\cf12 ([ \\, \\, 59, \\, 59,] + 12, \cf13 inf\cf12 ),\
+		\cf15 \\fmratio\cf12 , \cf13 Pseq\cf12 ([ 0, \cf13 Pxrand\cf12 ([ 0.166, 0.5, 3, 4, 5 ], \cf13 inf\cf12 ), 0, \cf13 Pxrand\cf12 ([ 0.166, 0.5, 3, 4, 5 ], \cf13 inf\cf12 )], \cf13 inf\cf12 ),		\
+		\cf15 \\pan\cf12 , \cf13 Pseq\cf12 ([ -1, 1 ], \cf13 inf\cf12 )\
+		);\
+				\
+		kroll = \cf13 Pbind\cf12 (\
+		\cf15 \\instrument\cf12 , \cf15 \\synth_kroll\cf12 ,\
+		\cf15 \\amp\cf12 , 0.6,\
+		\cf15 \\dur\cf12 , \cf13 Pseq\cf12 ([ 12, 4 ]/4.0,\cf13 inf\cf12 ),\
+		\cf15 \\midinote\cf12 , \cf13 Pseq\cf12 ([ \\, 59, \\, 71 ] + 24, \cf13 inf\cf12 ),\
+\cf0 		\cf17 \\pan\cf0 , \cf11 Prand\cf0 ([ 1, -1,  0.5, -0.5 ], \cf11 inf\cf0 )\cf12 \
+		);\
+					\
+		\cf13 Ptpar\cf12 ([0,bass, 0,chord, \cf0 0,chord2, \cf12 0,melody, 0,fkick, 0,shaker, 0,hihat, 0,\cf0 clap,\cf12  0,klock, 0,kroll]).play(clock);\
+		\};\
+	\
+	\
+	gym_synth.value;\
+	gym_seq.value;\
+	\
+	)}

@@ -1,0 +1,26 @@
+n = NetAddr("10.0.0.9", 57120);
+n.sendMsg("colorplay",60);
+n.sendMsg("colorplay",80);
+n.sendMsg("colorplay",30);
+
+(
+Pbind(
+		\midinote, Pseq([60,62,64,66,68],inf), 
+		\amp, 0, 
+		\function, Pfunc({arg env;
+			env[\midinote].postln; 
+			n.sendMsg("colorplay",env[\midinote]);
+		})
+).play;
+)
+
+(
+Pbind(
+		\midinote, Prand((20..80),inf), 
+		\amp, 0, 
+		\function, Pfunc({arg env;
+			env[\midinote].postln; 
+			n.sendMsg("colorplay",env[\midinote]);
+		})
+).play;
+)

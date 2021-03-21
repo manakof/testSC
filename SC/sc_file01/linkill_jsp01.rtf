@@ -1,0 +1,70 @@
+{\rtf1\ansi\ansicpg932\cocoartf1038\cocoasubrtf360
+{\fonttbl\f0\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue191;\red96\green96\blue96;\red0\green115\blue0;
+}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs22 \cf2 Synth\cf0 (\cf3 "hz_50"\cf0 ,[\cf4 \\outBus\cf0 ,0]);\
+\cf2 Synth\cf0 (\cf3 "hz_50"\cf0 ,[\cf4 \\outBus\cf0 ,10]);\
+\
+\cf2 Synth\cf0 (\cf3 "hz_50_s"\cf0 ,[\cf4 \\outBus\cf0 ,0]);\
+\cf2 Synth\cf0 (\cf3 "hz_50_s"\cf0 ,[\cf4 \\outBus\cf0 ,10]);\
+\
+\cf2 Synth\cf0 (\cf3 "hz_4410"\cf0 ,[\cf4 \\outBus\cf0 ,0]);\
+\cf2 Synth\cf0 (\cf3 "hz_4410"\cf0 ,[\cf4 \\outBus\cf0 ,10]);\
+\cf2 Synth\cf0 (\cf3 "hz_4410"\cf0 ,[\cf4 \\outBus\cf0 ,0, \\freq, 6300]);\
+\cf2 Synth\cf0 (\cf3 "hz_4410"\cf0 ,[\cf4 \\outBus\cf0 ,10, \\freq, 6300]);\
+\cf2 Synth\cf0 (\cf3 "hz_4410"\cf0 ,[\cf4 \\outBus\cf0 ,0, \\freq, 5512.5]);\
+\cf2 Synth\cf0 (\cf3 "hz_4410"\cf0 ,[\cf4 \\outBus\cf0 ,10, \\freq, 5512.5]);\
+\cf2 Synth\cf0 (\cf3 "hz_4410"\cf0 ,[\cf4 \\outBus\cf0 ,0, \\freq, 4900]);\
+\cf2 Synth\cf0 (\cf3 "hz_4410"\cf0 ,[\cf4 \\outBus\cf0 ,10, \\freq, 4900]);\
+\
+\cf2 Synth\cf0 (\cf3 "hz_50_pos"\cf0 ,[\cf4 \\outBus\cf0 ,0]);\
+\cf2 Synth\cf0 (\cf3 "hz_50_pos"\cf0 ,[\cf4 \\outBus\cf0 ,10]);\
+\
+\cf2 Synth\cf0 (\cf3 "snare60"\cf0 ,[\cf4 \\outBus\cf0 ,0]);\
+\cf2 Synth\cf0 (\cf3 "snare60"\cf0 ,[\cf4 \\outBus\cf0 ,10]);\
+\
+\cf2 Synth\cf0 (\cf3 "up-drum00"\cf0 ,[\cf4 \\outBus\cf0 ,0]);\
+\cf2 Synth\cf0 (\cf3 "up-drum00"\cf0 ,[\cf4 \\outBus\cf0 ,10]);\
+\
+\cf2 Synth\cf0 (\cf3 "hhl"\cf0 ,[\cf4 \\outBus\cf0 ,0]);\
+\cf2 Synth\cf0 (\cf3 "hhl"\cf0 ,[\cf4 \\outBus\cf0 ,10]);\
+\
+\cf2 Synth\cf0 (\cf3 "snr"\cf0 ,[\cf4 \\outBus\cf0 ,0]);\
+\cf2 Synth\cf0 (\cf3 "snr"\cf0 ,[\cf4 \\outBus\cf0 ,10]);\
+\
+\cf2 Synth\cf0 (\cf3 "bass1"\cf0 ,[\cf4 \\outBus\cf0 ,0]);\
+\cf2 Synth\cf0 (\cf3 "bass1"\cf0 ,[\cf4 \\outBus\cf0 ,10]);\
+\
+\cf2 Synth\cf0 (\cf3 "bass2"\cf0 ,[\cf4 \\outBus\cf0 ,0]);\
+\cf2 Synth\cf0 (\cf3 "bass2"\cf0 ,[\cf4 \\outBus\cf0 ,10]);\
+\
+s.sendMsg(\cf4 \\s_new\cf0 ,\cf4 \\bass4\cf0 ,~x=s.nextNodeID,0,1);\
+s.sendMsg(\cf4 \\n_set\cf0 ,~x,\cf4 \\gate\cf0 ,0);\
+~bass4_io = \cf2 Synth\cf0 (\cf3 "bass4"\cf0 );\
+~bass4_io.free;\
+\
+\cf2 Synth\cf0 (\cf3 "white_s"\cf0 ,[\cf4 \\outBus\cf0 ,0]);\
+\
+\cf2 Synth\cf0 (\cf3 "white_o"\cf0 ,[\cf4 \\outBus\cf0 ,0]);\
+\
+\cf2 Synth\cf0 (\cf3 "low"\cf0 ,[\cf4 \\outBus\cf0 ,0]);\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+}

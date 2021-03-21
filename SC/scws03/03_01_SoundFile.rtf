@@ -1,0 +1,162 @@
+{\rtf1\ansi\ansicpg932\cocoartf1038\cocoasubrtf360
+{\fonttbl\f0\fnil\fcharset128 HiraKakuProN-W3;\f1\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red191\green0\blue0;\red0\green0\blue191;\red96\green96\blue96;
+\red0\green115\blue0;\red191\green0\blue0;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs26 \cf0 \
+\cf2 // SuperCollider workshop at WOMB LOUNGE 2012\cf0 \
+\
+\cf2 //03_01_SoundFile \'83\'54\'83\'45\'83\'93\'83\'68\'83\'74\'83\'40\'83\'43\'83\'8b\'82\'cc\'88\'b5\'82\'a2
+\f1\fs24 \cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\ql\qnatural\pardirnatural
+
+\f0\fs26 \cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf2 //\'83\'54\'83\'45\'83\'93\'83\'68\'83\'74\'83\'40\'83\'43\'83\'8b\'82\'f0\'88\'b5\'82\'a4\'82\'c9\'82\'cdBuffer\'82\'f0\'8e\'67\'82\'a2\'82\'dc\'82\'b7\'81\'42\cf0 \
+\cf2 //\'83\'54\'83\'45\'83\'93\'83\'68\'83\'74\'83\'40\'83\'43\'83\'8b\'82\'cdsounds/\'88\'c8\'89\'ba\'82\'c9\'82\'a8\'82\'ad\'82\'cc\'82\'aa\'97\'c7\'82\'a2\'82\'c5\'82\'b5\'82\'e5\'82\'a4\'81\'42\cf0 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\ql\qnatural\pardirnatural
+
+\f1\fs24 \cf2 //////////////////////////////////////////////////////////////////////////////////////////////////////	\cf0 \
+\pard\pardeftab560\li1700\fi-1700\ql\qnatural
+
+\f0\fs26 \cf0 \
+\cf2 //PlayBuf \'83\'6f\'83\'62\'83\'74\'83\'40\'83\'76\'83\'8c\'83\'43\'83\'84\'81\'5b\cf0 \
+\
+b = \cf3 Buffer\cf0 .new( s ); \cf2 //\'83\'54\'81\'5b\'83\'6f\'82\'c9\'83\'6f\'83\'62\'83\'74\'83\'40\'82\'f0\'8d\'ec\'82\'e8\'82\'dc\'82\'b7\cf0 \
+b.allocRead( \cf4 "sounds/a11wlk01.wav"\cf0  ); \cf2 //\'83\'54\'83\'45\'83\'93\'83\'68\'83\'74\'83\'40\'83\'43\'83\'8b\'82\'f0\'8a\'84\'82\'e8\'93\'96\'82\'c4\'82\'dc\'82\'b7\'81\'42\cf0 \
+\
+x = \{ \cf3 PlayBuf\cf0 .ar(1, b.bufnum, \cf3 BufRateScale\cf0 .kr( b.bufnum ), loop: 0, doneAction:2 ) * 0.5 \}.play;\
+\
+x = \{ \cf3 PlayBuf\cf0 .ar(1, b.bufnum, \cf3 BufRateScale\cf0 .kr( b.bufnum ),Impulse.ar(5),44100*3, loop: 0, doneAction:2 ) * 0.5 \}.play;\
+(\
+x = \{ \cf3 PlayBuf\cf0 .ar(1, b.bufnum, \cf3 BufRateScale\cf0 .kr( b.bufnum ),Dust.ar(5),LFNoise2.ar(4,44100), loop: 1, doneAction:2 ).dup() * 0.5 \}.play;\
+)\
+x = \{ \cf3 PlayBuf\cf0 .ar(1, b.bufnum, \cf3 1.6\cf0 , loop: 0, doneAction:2 ) * 0.5 \}.play;\
+\
+x.free;\
+b.free;\
+(\
+SynthDef(\\testPlayer,\
+\{Out.ar(0,\
+	\cf3 PlayBuf\cf0 .ar(1, b.bufnum, \cf3 BufRateScale\cf0 .kr( b.bufnum ),Dust.ar(5),LFNoise2.ar(4,44100), loop: 1, doneAction:2 ).dup*0.5 ;\
+	)\
+	\}).store;\
+	)\
+	Synth(\\testPlayer);\
+\
+\pard\pardeftab560\ql\qnatural
+\cf2 //PlayBuf\'83\'4e\'83\'89\'83\'58\cf0 \
+\pard\pardeftab560\ql\qnatural
+\cf3 PlayBuf\cf0 .ar(numChannels, bufnum, rate, trigger, startPos, loop, doneAction)\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\b \cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\b0 \cf2 //\'81\'40\'8a\'65\'88\'f8\'90\'94\'82\'c6\'96\'f0\'8a\'84\cf0 \
+\cf2 //\cf0 \
+\pard\pardeftab560\ql\qnatural
+\cf2 //	numChannels: \'8d\'c4\'90\'b6\'82\'b7\'82\'e9\'83\'6f\'83\'62\'83\'74\'83\'40\'82\'cc\'83\'60\'83\'83\'83\'93\'83\'6c\'83\'8b\'90\'94\cf0 \
+\cf2 //	\cf0 \
+\cf2 //	bufnum: \'8d\'c4\'90\'b6\'82\'b7\'82\'e9\'83\'6f\'83\'62\'83\'74\'83\'40\'82\'cc\'8e\'af\'95\'caID\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf2 //	\cf0 \
+\pard\pardeftab560\ql\qnatural
+\cf2 //	rate: \'8d\'c4\'90\'b6\'82\'b7\'82\'e9\'83\'73\'83\'62\'83\'60\'81\'691\'82\'c5\'93\'99\'91\'ac\'81\'6a\cf0 \
+\cf2 //	\cf0 \
+\cf2 //	trigger: 0\'88\'c8\'8f\'e3\'82\'c9\'95\'cf\'89\'bb\'82\'b5\'82\'bd\'8e\'9e\'8d\'c4\'90\'b6\'82\'f0\'83\'8a\'83\'5a\'83\'62\'83\'67\'82\'b7\'82\'e9\cf0 \
+\cf2 //	\cf0 \
+\cf2 //	startPos: \'8d\'c4\'90\'b6\'82\'cc\'83\'4c\'83\'85\'81\'5b\'82\'cc\'88\'ca\'92\'75\'81\'69\'83\'54\'83\'93\'83\'76\'83\'8b\'90\'94\'81\'6a\cf0 \
+\cf2 //	\cf0 \
+\cf2 //	loop: 1\'82\'cc\'8e\'9e\'83\'8b\'81\'5b\'83\'76\'81\'410\'82\'cc\'82\'c6\'82\'ab\'83\'8b\'81\'5b\'83\'76\'82\'b5\'82\'c8\'82\'a2\cf0 \
+\cf2 //	\cf0 \
+\cf2 //	doneAction: \'8d\'c4\'90\'b6\'8c\'e3\'82\'cc\'83\'56\'83\'93\'83\'5a\'82\'cc\'90\'dd\'92\'e8\'81\'40 {\field{\*\fldinst{HYPERLINK "file:///Applications/SuperCollider/Help/UGens/Synth%20control/Envelopes/UGen-doneActions.html"}}{\fldrslt UGen-doneActions}}\'82\'f0\'8e\'51\'8f\'c6\cf0 \
+\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\ql\qnatural\pardirnatural
+
+\f1\fs24 \cf2 //////////////////////////////////////////////////////////////////////////////////////////////////////	\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\ql\qnatural\pardirnatural
+
+\f0\fs26 \cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf2 //TGrains\cf0 \
+\cf2 //\'83\'4f\'83\'89\'83\'6a\'83\'85\'81\'5b\'83\'89\'83\'56\'83\'93\'83\'5a\'83\'56\'83\'58\'82\'cc\'82\'bd\'82\'df\'82\'ccUGen\cf0 \
+\pard\pardeftab560\li1700\fi-1700\ql\qnatural
+\cf0 \
+\pard\pardeftab560\ql\qnatural
+\cf2 //	\cf0 \
+\cf2 //	bufnum: \'8d\'c4\'90\'b6\'82\'b7\'82\'e9\'83\'6f\'83\'62\'83\'74\'83\'40\'82\'cc\'8e\'af\'95\'caID  =10\
+\cf0 \
+s.sendMsg(\cf5 \\b_allocRead\cf0 , 10, \cf4 "sounds/a11wlk01.wav"\cf0 );\
+\
+\
+(\
+	\{\
+		\cf3 var\cf0  b = 10, trate, dur, rate;\
+		trate = \cf3 MouseY\cf0 .kr(2,200,1);\
+		dur = 24 / trate;\
+		rate = 1;\
+		\cf3 TGrains\cf0 .ar(2, \cf3 Impulse\cf0 .ar(trate), b, rate, \cf3 MouseX\cf0 .kr(0,\cf3 BufDur\cf0 .kr(b)), dur, 0, 1, 4);\
+	\}.play;\
+)\
+(\
+	\{\
+		\cf3 var\cf0  b = 10, trate, dur, rate;\
+		trate = \cf3 MouseY\cf0 .kr(2,200,1);\
+		dur = 24 / trate;\
+		rate = 1;\
+		\cf3 TGrains\cf0 .ar(2, \cf3 Impulse\cf0 .ar(trate), b, rate, \cf3 MouseX\cf0 .kr(0,\cf3 BufDur\cf0 .kr(b)), dur, 0, 1, 4);\
+	\}.play;\
+)\
+\
+\cf6 //Synth\'92\'e8\'8b\'60\cf0 \
+(\
+SynthDef(\\test_player2,\{\
+\pard\pardeftab560\ql\qnatural
+\cf3 var\cf0  b = 10, trate, dur, rate;\
+		trate = \cf3 MouseY\cf0 .kr(2,200,1);\
+		dur = 24 / trate;\
+		rate = 1;\
+		Out.ar(0,\
+		\cf3 TGrains\cf0 .ar(2, \cf3 Impulse\cf0 .ar(trate), b, rate, \cf3 MouseX\cf0 .kr(0,\cf3 BufDur\cf0 .kr(b)), dur, 0, 1, 4);\
+)\
+\}).store;\
+)\
+\
+a=Synth(\\test_player2);\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf0 a.free;\
+\
+\
+\cf2 //TGrains\'83\'4e\'83\'89\'83\'58\cf0 \
+\pard\pardeftab560\ql\qnatural
+\cf3 TGrains\cf0 .ar( numChannels, trigger, bufnum, rate, centerPos, dur, pan, amp, interp )\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf0 \
+\cf2 //\'81\'40\'8a\'65\'88\'f8\'90\'94\'82\'c6\'96\'f0\'8a\'84\cf0 \
+\cf2 //\cf0 \
+\pard\pardeftab560\ql\qnatural
+\cf2 //	numChannels: \'8d\'c4\'90\'b6\'82\'b7\'82\'e9\'83\'6f\'83\'62\'83\'74\'83\'40\'82\'cc\'83\'60\'83\'83\'83\'93\'83\'6c\'83\'8b\'90\'94\cf0 \
+\cf2 //	\cf0 \
+\cf2 //	trigger: 0\'88\'c8\'8f\'e3\'82\'c9\'95\'cf\'89\'bb\'82\'b5\'82\'bd\'8e\'9e\'83\'4f\'83\'8c\'83\'43\'83\'93\'82\'f0\'8d\'c4\'90\'b6\'82\'f0\'82\'b7\'82\'e9\cf0 \
+\cf2 //	\cf0 \
+\cf2 //	bufnum: \'8d\'c4\'90\'b6\'82\'b7\'82\'e9\'83\'6f\'83\'62\'83\'74\'83\'40\'82\'cc\'8e\'af\'95\'caID\cf0 \
+\cf2 //	\cf0 \
+\cf2 //	rate: \'8d\'c4\'90\'b6\'82\'b7\'82\'e9\'83\'73\'83\'62\'83\'60\cf0 \
+\cf2 //	\cf0 \
+\cf2 //	centerPos: \'83\'4f\'83\'8c\'83\'43\'83\'93\'82\'cc\'83\'47\'83\'93\'83\'94\'83\'46\'83\'8d\'81\'5b\'83\'76\'82\'cc\'92\'b8\'93\'5f\'82\'cc\'88\'ca\'92\'75\'81\'69\'83\'54\'83\'93\'83\'76\'83\'8b\'90\'94\'81\'6a\cf0 \
+\cf2 //	\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf2 //	dur: \'83\'4f\'83\'8c\'83\'43\'83\'93\'82\'cc\'83\'47\'83\'93\'83\'94\'83\'46\'83\'8d\'81\'5b\'83\'76\'82\'cc\'92\'b7\'82\'b3\'81\'69\'95\'62\'81\'6a\cf0 \
+\cf2 //	\cf0 \
+\cf2 //	pan: \'83\'70\'83\'93\'83\'7c\'83\'57\'83\'56\'83\'87\'83\'93\cf0 \
+\cf2 //	\cf0 \
+\cf2 //	amp: \'90\'55\'95\'9d\cf0 \
+\cf2 //	\cf0 \
+\cf2 //	interp: \'83\'4f\'83\'8c\'83\'43\'83\'93\'82\'cc\'91\'7d\'93\'fc\'82\'cc\'8e\'64\'95\'fb\'81\'411\'82\'c5\'90\'dd\'92\'e8\'96\'b3\'82\'b5\'81\'412\'82\'c5\'83\'89\'83\'43\'83\'69\'81\'5b\'81\'414\'82\'c5\'83\'4c\'83\'85\'81\'5b\'83\'72\'83\'62\'83\'4e\cf0 \
+\
+\
+}

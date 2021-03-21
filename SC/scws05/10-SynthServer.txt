@@ -1,0 +1,38 @@
+// Define "pulse" synthdef.
+(
+SynthDef("pulse", { arg freq = 440, rate = 2, amp = 0.5;
+	var osc, trg;
+	trg = Decay2.ar(Impulse.ar(rate,0, 0.3), 0.01, 0.3, amp);
+	osc = {SinOsc.ar(freq,0, trg)}.dup;
+	Out.ar(0, osc);
+}).writeDefFile;
+)
+
+// Play "pulse" on the local server.
+(
+s = Server.local;
+s.boot;
+s.sendSynthDef("pulse");
+s.sendMsg("/s_new", "pulse", 1000, 1, 0);
+)
+
+// Dispose the node.
+s.sendMsg("/n_free", 1000);
+
+
+// Play "pulse" on iPhone.
+// Set IP Address of iPhone.
+(
+s = Server.new(€iPhone, NetAddr.new("10.0.0.9", 57110));
+s.sendSynthDef("pulse");
+s.sendMsg("/s_new", "pulse", 1001, 1, 0);
+)
+
+// Change parameters.
+s.sendMsg("/n_set", 1001, "freq", 880, "rate", 2.5);
+
+// Change parameters.
+s.sendMsg("/n_set", 1001, "freq", 660, "rate", 4.0);
+
+// Dispose the node.
+s.sendMsg("/n_free", 1001);

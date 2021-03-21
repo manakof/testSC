@@ -1,0 +1,90 @@
+{\rtf1\ansi\ansicpg932\cocoartf1038\cocoasubrtf360
+{\fonttbl\f0\fnil\fcharset128 HiraKakuProN-W3;}
+{\colortbl;\red255\green255\blue255;\red191\green0\blue0;\red0\green0\blue191;\red96\green96\blue96;
+\red0\green115\blue0;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs26 \cf2 //SuperCollider Code\cf0 \
+\cf2 /////// SC WOMB 2012 02 28 //////////////////////////////////////////////////////\cf0 \
+\cf2 /////// SCWomb2012_OSCSend_audiovisual_openframeworks_Example //////////\cf0 \
+\cf2 //\'83\'8d\'81\'5b\'83\'4a\'83\'8b\'83\'7a\'83\'58\'83\'67\'83\'54\'81\'5b\'83\'6f\'82\'f0\'8b\'4e\'93\'ae\cf0 \
+s.boot;\
+\cf2 //\'93\'e0\'97\'65\'82\'cdProcessing\'82\'cc\'83\'54\'83\'93\'83\'76\'83\'8b\'82\'c6\'82\'d9\'82\'da\'93\'af\'82\'b6\'82\'c5\'82\'b7\'81\'42\cf0 \
+\cf2 //SynthDef\'82\'f0\'93\'6f\'98\'5e\cf0 \
+(\
+\cf2 //\'83\'4e\'83\'8a\'83\'62\'83\'76\'83\'6d\'83\'43\'83\'59\'83\'70\'81\'5b\'83\'4a\'83\'62\'83\'56\'83\'87\'83\'93\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf3 SynthDef\cf0 ( \cf4 "Click"\cf0 , \{ \cf3 arg\cf0  amp;\
+	\cf3 var\cf0  src, env;\
+	src = \cf3 RLPF\cf0 .ar( \cf3 ClipNoise\cf0 .ar( 0.2 ), \cf3 MouseX\cf0 .kr( 50, 20000 ), 0.3 );\
+	env = \cf3 EnvGen\cf0 .ar( \cf3 Env\cf0 .perc( 0, 0.3, amp, -4 ), doneAction: 2 ).dup;\
+	\cf3 Out\cf0 .ar( 0 , src * env );\
+	\
+	\cf3 SendTrig\cf0 .kr( \cf3 Impulse\cf0 .kr(1) , 0, amp );\
+\}).store;\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf2 //\'83\'4c\'83\'62\'83\'4e\'83\'70\'81\'5b\'83\'4a\'83\'62\'83\'56\'83\'87\'83\'93\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf3 SynthDef\cf0 ( \cf4 "Kick"\cf0 , \{ \cf3 arg\cf0  amp;\
+	\cf3 var\cf0  src, env, freq;\
+	freq = \cf3 XLine\cf0 .kr( 8000, 43, 0.025 );\
+	src = \cf3 SinOsc\cf0 .ar( freq, 0, 0.3 );\
+	env = \cf3 EnvGen\cf0 .ar( \cf3 Env\cf0 .perc( 0, 0.3, amp, 2 ), doneAction: 2 ).dup;\
+	\cf3 Out\cf0 .ar( 0 , src * env );\
+	\cf3 SendTrig\cf0 .kr( \cf3 Impulse\cf0 .kr(1) , 1, amp );\
+\}).store;\
+\
+)\
+\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf2 //\'83\'56\'81\'5b\'83\'50\'83\'93\'83\'58\'82\'f0\'8d\'c4\'90\'b6\cf0 \
+(\
+p = \cf3 Pdef\cf0 (\cf5 \\foo\cf0 ,\
+	\cf3 Ppar\cf0 ([\
+		\cf3 Pbind\cf0 ( \
+			\cf5 \\instrument\cf0 , \cf4 "Click"\cf0 ,\
+			\cf5 \\dur\cf0 , 1/8, \
+			\cf5 \\amp\cf0 , \cf3 Prand\cf0 ( [ 1, 0 ], \cf3 inf\cf0  )\
+		),\
+		\
+		\cf3 Pbind\cf0 (\
+		 \cf5 \\instrument\cf0 , \cf4 "Kick"\cf0 ,\
+		 \cf5 \\dur\cf0 , 1/2,\
+		 \cf5 \\amp\cf0 , \cf3 Pseq\cf0 ( [ 1, 1, 1, 0], \cf3 inf\cf0  )\
+		 )\
+		])\
+	).play\
+)\
+p.stop;\
+\
+\
+\cf2 //\'83\'67\'83\'8a\'83\'4b\'81\'5bOSC\'82\'f0\'8e\'f3\'82\'af\'82\'c4Processing\'82\'c9\'8c\'fc\'82\'af\'82\'c4OSC\'83\'81\'83\'62\'83\'5a\'81\'5b\'83\'57\'82\'f0\'91\'97\'90\'4d\cf0 \
+\pard\pardeftab560\ql\qnatural
+\cf0 (\
+\cf3 OSCresponder\cf0 ( s.addr, \cf5 '/tr'\cf0 , \{ \cf3 arg\cf0  time, responder, msg;\
+	\cf3 var\cf0  netAddress, instrumentId, ampValue;\
+	netAddress = \cf3 NetAddr\cf0 ( \cf4 "localhost"\cf0 , 5000 );\
+	instrumentId = msg[2];\
+	ampValue = msg[3];\
+\
+	instrumentId.switch(\
+		0, \{\
+			if( 1 == ampValue, \{\
+				netAddress.sendMsg( \cf4 "/trig"\cf0  , \cf4 "click"\cf0  );\
+				( \cf4 "instrument ID is : "\cf0  + instrumentId.asString + \cf4 "ampValue Value is : "\cf0  +  ampValue.asString +"click").postln;\
+			\})\
+		\},\
+		1, \{\
+			if( 1 == ampValue, \{\
+				netAddress.sendMsg( \cf4 "/trig"\cf0  , \cf4 "kick"\cf0  );\
+				( \cf4 "instrument ID is : "\cf0  + instrumentId.asString + \cf4 "ampValue Value is : "\cf0  +  ampValue.asString+"kick" ).postln;\
+			\})\
+		\}\
+	)\
+	\
+\}).add\
+);\
+\
+}

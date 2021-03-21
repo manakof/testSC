@@ -1,0 +1,213 @@
+{\rtf1\ansi\ansicpg932\cocoartf1038\cocoasubrtf360
+{\fonttbl\f0\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue191;\red96\green96\blue96;\red191\green0\blue0;
+}
+\deftab720
+\pard\pardeftab720\ql\qnatural
+
+\f0\fs22 \cf0 (\
+\cf2 SynthDef\cf0 (\cf3 "rev"\cf0 ,\{\
+	\cf2 var\cf0  src;\
+	\cf2 Buffer\cf0 .alloc(s,44100,2,bufnum:10);\
+	src = \cf2 PingPong\cf0 .ar(10,\cf2 In\cf0 .ar([10,11]),0.225,0.3,1);\
+	src = src+\cf2 In\cf0 .ar([20,21]);\
+	4.do(\{src =\cf2 AllpassC\cf0 .ar(src,0.25,\{[0.04.rand,0.02.rand]+0.01\},4.8)\});\
+	\cf2 Out\cf0 .ar(0,src);\
+	\}).play;\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\ql\qnatural\pardirnatural
+\cf0 \
+\cf2 SynthDef\cf0 (\cf3 "hz_50"\cf0 ,\{\
+	\cf2 arg\cf0  amp = 1.0, outBus = 10;\
+	\cf2 var\cf0  src, out, env0;\
+	env0 =  \cf2 EnvGen\cf0 .ar(\cf2 Env\cf0 .new([0.5, 1, 0.5, 0], [0.005, 0.06, 0.26], [-4, -2, -4]), doneAction:2);\
+	src = \cf2 SinOsc\cf0 .ar(60);\
+	out = src + \cf2 LFPulse\cf0 .ar(src, 0, 0.5, 1, -0.5);\
+	out = out + \cf2 WhiteNoise\cf0 .ar(0.5);\
+	out = out + \cf2 SinOsc\cf0 .ar(src, 0.5, env0);\
+	out = \cf2 Pan2\cf0 .ar(out, 0);\
+			\
+	out = out * 1.2;\
+	out = out.clip2(0.5);\
+	\
+	\cf2 Out\cf0 .ar(outBus, out);\
+\}).store;\
+\
+\cf2 SynthDef\cf0 (\cf3 "hz_50_s"\cf0 ,\{\
+	\cf2 arg\cf0  amp = 1.0, outBus = 10;\
+	\cf2 var\cf0  src, out, env0;\
+	env0 =  \cf2 EnvGen\cf0 .ar(\cf2 Env\cf0 .new([0.5, 1, 0.5, 0], [0.005, 0.06, 0.001], [-4, -2, -4]), doneAction:2);\
+	src = \cf2 SinOsc\cf0 .ar(60);\
+	out = src + \cf2 LFPulse\cf0 .ar(src, 0, 0.5, 1, -0.5);\
+	out = out + \cf2 WhiteNoise\cf0 .ar(0.5);\
+	out = out + \cf2 SinOsc\cf0 .ar(src, 0.5, env0);\
+	out = \cf2 Pan2\cf0 .ar(out, 0);\
+			\
+	out = out * 1.2;\
+	out = out.clip2(0.5);\
+	\
+	\cf2 Out\cf0 .ar(outBus, out);\
+\}).store;\
+\
+\
+\cf2 SynthDef\cf0 (\cf3 "hz_4410"\cf0 ,\{\
+	\cf2 arg\cf0  amp = 1.0, outBus = 10, freq=4410;\
+	\cf2 var\cf0  src, out, env0;\
+	env0 =  \cf2 EnvGen\cf0 .ar(\cf2 Env\cf0 .new([0.5, 1, 0.5, 0], [0.001, 0.001, 0.06], [-4, -2, -4]), doneAction:2);\
+	src = \cf2 SinOsc\cf0 .ar(freq);\
+	out = src + \cf2 LFPulse\cf0 .ar(src, 0, 0.5, 1, -0.5);\
+	\cf4 //out = out + WhiteNoise.ar(0.5);\cf0 \
+	out = out + \cf2 SinOsc\cf0 .ar(src, 0.5, env0);\
+	out = \cf2 Pan2\cf0 .ar(out, 0);\
+			\
+	out = out * 1.2;\
+	out = out.clip2(0.3);\
+	\
+	\cf2 Out\cf0 .ar(outBus, out);\
+\}).store;\
+\
+\
+\cf2 SynthDef\cf0 (\cf3 "hz_50_pos"\cf0 ,\{\
+	\cf2 arg\cf0  amp = 1.0, outBus=10;\
+	\cf2 var\cf0  src, out, env0;\
+	env0 =  \cf2 EnvGen\cf0 .ar(\cf2 Env\cf0 .new([0.5, 1, 0.5, 0], [0.005, 0.06, 0.26], [-4, -2, -4]), doneAction:2);\
+	src = \cf2 SinOsc\cf0 .ar(60*env0);\
+	out = \cf2 Pan2\cf0 .ar(src, 0);\
+	out = out + \cf2 LFPulse\cf0 .ar(out, 0, 0.5, 1, -0.5);\
+	out = out + \cf2 WhiteNoise\cf0 .ar(1);\
+	out = \cf2 LPF\cf0 .ar(out, 900, env0);\
+	out = out + \cf2 SinOsc\cf0 .ar(src, 0.5, env0);\
+			\
+	out = out * 1.2;\
+	out = out.clip2(1);\
+	\
+	\cf2 Out\cf0 .ar(outBus, out);\
+\}).store;\
+\
+\
+\cf2 SynthDef\cf0 (\cf3 "snare60"\cf0 ,\{\
+	\cf2 arg\cf0  amp = 1.0, outBus = 10;\
+	\cf2 var\cf0  src, out, env0;\
+	env0 =  \cf2 EnvGen\cf0 .ar(\cf2 Env\cf0 .new([0.5, 1, 0.5, 0], [0.005, 0.06, 0.26], [-4, -2, -4]), doneAction:2);\
+	src = \cf2 SinOsc\cf0 .ar(60);\
+	out = \cf2 LFPulse\cf0 .ar(src, 0, 0.5, 1, -0.5);\
+	out = out + \cf2 WhiteNoise\cf0 .ar(1);\
+	out = \cf2 LPF\cf0 .ar(out, 7350, env0);\
+	out = out + \cf2 SinOsc\cf0 .ar(src, 0.5, env0);\
+	out = \cf2 Pan2\cf0 .ar(out, 0);\
+	\
+	out = out * 1.5;\
+	out = out.clip2(0.5);\
+	\
+	\cf2 Out\cf0 .ar(outBus, out);\
+\}).store;\
+\
+\pard\pardeftab720\ql\qnatural
+\cf0 \
+\cf2 SynthDef\cf0 (\cf3 "up-drum00"\cf0 , \{\
+	\cf2 arg\cf0  gate=1, note=60, amp=1, pan=0, outBus=10;\
+  	\cf2 var\cf0  x, env1, env2, env3, mod, noise;\
+  	env1 = \cf2 Env\cf0 .perc(0.001,0.15,1,-4);\
+  	env2 = \cf2 Env\cf0 .perc(0.001,0.01,1,-4);\
+	env3 = \cf2 Env\cf0 .perc(0.0001,0.01,0.2,-10);\
+  	mod = \cf2 EnvGen\cf0 .ar(env2,gate) * 100;\
+  	noise = \cf2 EnvGen\cf0 .ar(env3,gate);\
+  	x = \cf2 SinOsc\cf0 .ar((note-24).midicps + mod, 0, amp);\
+  	x = \cf2 EnvGen\cf0 .ar(env1,gate,doneAction: 2) * x - noise;\
+  	\cf2 Out\cf0 .ar(outBus, \cf2 Pan2\cf0 .ar(x,pan));\
+	\}).store;\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\ql\qnatural\pardirnatural
+\cf0 \
+\pard\pardeftab720\ql\qnatural
+\cf2 SynthDef\cf0 (\cf3 "hhl"\cf0 ,\{\
+	\cf2 arg\cf0  out=0,amp=1,rate=1, outBus=10;\
+	\cf2 var\cf0  src;\
+	src=\cf2 RLPF\cf0 .ar(\cf2 Pan2\cf0 .ar(\cf2 ClipNoise\cf0 .ar(0.2)),\cf2 LFNoise2\cf0 .ar(0.1,3000,9000),0.3)*\cf2 EnvGen\cf0 .ar(\cf2 Env\cf0 .perc(0.01,0.07,amp,-6),doneAction:2);\
+	\cf2 Out\cf0 .ar(outBus,src);\
+	\}).store;\
+\
+\
+\cf2 SynthDef\cf0 (\cf3 "snr"\cf0 ,\{\
+	\cf2 arg\cf0  out=10,amp=1,rate=1, outBus = 10;\
+	\cf2 var\cf0  src,src2;\
+	src=\cf2 RHPF\cf0 .ar(\cf2 ClipNoise\cf0 .ar(0.05),\cf2 LFNoise2\cf0 .ar(1,700,800),0.3)*\cf2 EnvGen\cf0 .ar(\cf2 Env\cf0 .perc(0.00,0.125,amp,-3),doneAction:2);\
+	src2=\cf2 SinOsc\cf0 .ar(120,0,0.3)*\cf2 EnvGen\cf0 .ar(\cf2 Env\cf0 .perc(0.00,0.26,amp,-12),doneAction:2);\
+	\cf2 Out\cf0 .ar(outBus,(src+src2).dup);\
+	\}).store;\
+\
+\
+\cf2 SynthDef\cf0 (\cf3 "bass1"\cf0 ,\{\
+	\cf2 arg\cf0  amp = 1,note=24,velo=0.3, outBus = 10;\
+	\cf2 var\cf0  src;\
+	src = \cf2 Pan2\cf0 .ar(\cf2 Mix\cf0 .fill(7,\{\cf2 SinOsc\cf0 .ar((note+[0,-12,0,12].choose).midicps*([1,0.99,1.01,101].choose)+\cf2 LFNoise1\cf0 .ar(0.6,12),\cf2 SinOsc\cf0 .ar(note.midicps),\cf2 SinOsc\cf0 .ar(note.midicps,\cf2 Pulse\cf0 .ar(note.midicps,0.2)))\}).distort,0.02)*\cf2 EnvGen\cf0 .ar(\cf2 Env\cf0 .perc(0.0,velo,1,-2),doneAction:2,levelScale:amp);\
+	\cf2 Out\cf0 .ar(outBus, src);\
+	\}).store;\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\ql\qnatural\pardirnatural
+\cf0 \
+\pard\pardeftab720\ql\qnatural
+\cf2 SynthDef\cf0 (\cf3 "bass2"\cf0 ,\{\
+	\cf2 arg\cf0  amp=0.8,note=24,velo=0.4, outBus=10;\
+	\cf2 var\cf0  src;\
+	src = \cf2 RLPF\cf0 .ar(\cf2 Mix\cf0 .fill(5,\{\cf2 SinOsc\cf0 .ar((note+[0,5,7,12].choose).midicps+\cf2 LFNoise1\cf0 .ar(0.3,0.13),\cf2 SinOsc\cf0 .ar(note.midicps/2,0,4),\cf2 SinOsc\cf0 .ar((note).midicps,\cf2 SinOsc\cf0 .ar(note.midicps*2)))\}),\cf2 LFNoise2\cf0 .kr(0.5,23,90).midicps,0.3)*\cf2 EnvGen\cf0 .ar(\cf2 Env\cf0 .perc(0.5,4,0.15,12),doneAction:2,levelScale:amp);\
+	src = \cf2 Pan2\cf0 .ar(src, \cf2 LFNoise2\cf0 .ar(0.1));\
+	\cf2 Out\cf0 .ar(outBus,src);\
+	\}).store;\
+\
+\
+\cf2 SynthDef\cf0 (\cf3 "bass4"\cf0 ,\{\
+	\cf2 arg\cf0  freq = 4410,gate=1,out=0;\
+	\cf2 var\cf0  src;\
+	src=\cf2 SinOsc\cf0 .ar([freq,freq*0.99],\cf2 SinOsc\cf0 .ar(freq,0,\cf2 LFNoise1\cf0 .ar(2,1,6))*\cf2 EnvGen\cf0 .ar(\cf2 Env\cf0 .adsr(0.01,0.04,0.02,0.1,1,-4)),\cf2 SinOsc\cf0 .ar(freq*2,0,0.3))+\cf2 SinOsc\cf0 .ar(freq/17,\cf2 SinOsc\cf0 .ar(freq,0.8,\cf2 LFNoise2\cf0 .ar(1,42,3)),0.3)*\cf2 EnvGen\cf0 .ar(\cf2 Env\cf0 .adsr(0.0,0.6,0.2,0.02,1,6),gate,doneAction:2);\
+	\cf2 Out\cf0 .ar(0,\cf2 LPF\cf0 .ar((src*12).softclip*0.2,\cf2 MouseX\cf0 .kr(10,9800)));\
+	\}).send(s);\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\ql\qnatural\pardirnatural
+\cf0 \
+\cf2 SynthDef\cf0 .new(\cf3 "white_s"\cf0 ,\{\
+	\cf2 arg\cf0  outBus=0;\
+	\cf2 var\cf0  enva, envp, out;\
+	enva = \cf2 Env\cf0 .new([0]++\cf2 Array\cf0 .rand(20, 0.0, 1.0)++[0], \cf2 Array\cf0 .fill(20, 0.1));\
+	envp = \cf2 Env\cf0 .new(\cf2 Array\cf0 .rand(21, -1.0, 1.0), \cf2 Array\cf0 .fill(11, 0.5));\
+	out = \cf2 Pan2\cf0 .ar(\cf2 WhiteNoise\cf0 .ar(0.5), \cf2 EnvGen\cf0 .kr(envp, doneAction:2), \cf2 EnvGen\cf0 .kr(enva, doneAction:2));\
+	\cf4 //out = out * SinOsc.ar(4410);\cf0 \
+	\cf2 Out\cf0 .ar(outBus,out);\
+	\}).store;\
+\
+\
+\cf2 SynthDef\cf0 .new(\cf3 "white_o"\cf0 ,\{\
+	\cf2 arg\cf0  outBus=0;\
+	\cf2 var\cf0  enva, envp, out, out2;\
+	enva = \cf2 Env\cf0 .new([0]++\cf2 Array\cf0 .rand(20, 0.0, 1.0)++[0], \cf2 Array\cf0 .fill(20, 0.1));\
+	envp = \cf2 Env\cf0 .new(\cf2 Array\cf0 .rand(21, -1.0, 1.0), \cf2 Array\cf0 .fill(11, 0.1));\
+	out = \cf2 Pan2\cf0 .ar(\cf2 WhiteNoise\cf0 .ar(0.5), \cf2 EnvGen\cf0 .kr(envp, doneAction:2), \cf2 EnvGen\cf0 .kr(enva, doneAction:2));\
+	out2 =\cf2 Pan2\cf0 .ar(\cf2 SinOsc\cf0 .ar(63));\
+	out = out + out2;\
+	\cf2 Out\cf0 .ar(outBus,out);\
+	\}).store;\
+\
+\
+\cf2 SynthDef\cf0 .new(\cf3 "low"\cf0 ,\{\
+	\cf2 arg\cf0  outBus=0;\
+	\cf2 var\cf0  enva, envp, out, out2;\
+	enva = \cf2 Env\cf0 .new([0]++\cf2 Array\cf0 .rand(20, 0.0, 1.0)++[0], \cf2 Array\cf0 .fill(20, 0.1));\
+	envp = \cf2 Env\cf0 .new(\cf2 Array\cf0 .rand(21, -1.0, 1.0), \cf2 Array\cf0 .fill(11, 0.1));\
+	out = \cf2 Pan2\cf0 .ar(\cf2 SinOsc\cf0 .ar(0.5), \cf2 EnvGen\cf0 .kr(envp, doneAction:2), \cf2 EnvGen\cf0 .kr(enva, doneAction:2));\
+	out2 =\cf2 Pan2\cf0 .ar(\cf2 SinOsc\cf0 .ar(63));\
+	out = out + out2;\
+	\cf2 Out\cf0 .ar(outBus,out);\
+	\}).store;\
+)\
+\pard\pardeftab720\ql\qnatural
+\cf0 \
+(\
+100.do(\{\
+	\cf2 arg\cf0  i=0;\
+	(i+1).post;\
+	\cf3 ":"\cf0 .post;\
+	(44100/(i+1)).post;\
+	\cf3 "[Hz]"\cf0 .postln	\
+\})\
+)\
+}

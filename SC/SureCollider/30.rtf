@@ -1,0 +1,156 @@
+{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf420
+{\fonttbl\f0\fnil\fcharset77 Monaco;}
+{\colortbl;\red255\green255\blue255;\red25\green25\blue25;\red0\green0\blue191;\red96\green96\blue96;
+\red0\green115\blue0;\red191\green0\blue0;}
+\deftab720
+\pard\pardeftab720\sl200\ql\qnatural
+
+\f0\fs24 \cf2 // September26,2007 DrumGrainBreaking05 by_ChineseRoom aka otophilia\
+// 
+\fs18 \cf3 MouseX MouseY\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf3 \
+( // <--double click & push enter\
+\
+Routine\cf0 .run \{ \cf3 var\cf0  c;\
+c = \cf3 Condition\cf0 .new;\
+s = \cf3 Server\cf0 .default;\
+\
+s.bootSync(c);\
+\
+(\
+~sBuffer = \cf3 Buffer\cf0 .read(s, \cf4 "sounds/break2"\cf0 );\
+);\
+\
+\
+\
+(\
+\cf3 SynthDef\cf0 (\cf5 \\GrainSampler\cf0 , \{\
+\cf3 arg\cf0  outBus=0, amp=1.0, bufNum=0,\
+grRate= 40, grNew=1, retr=1, pos=0, rate=1, spd=0.5;\
+\
+\cf3 var\cf0  sr, output;\
+\cf3 var\cf0  phaseG, newG, xFade;\
+\cf3 var\cf0  outputA, phaseA;\
+\cf3 var\cf0  outputB, phaseB;\
+\
+sr = \cf3 SampleRate\cf0 .ir;\
+spd = \cf3 MouseX\cf0 .kr(0, 1.0);\
+\
+phaseG = \cf3 Phasor\cf0 .ar(retr, spd*rate, 0, \cf3 BufFrames\cf0 .ir(bufNum), pos);\
+newG = \cf3 Phasor\cf0 .ar(grNew, grRate/sr, 0, 1, -0.5);\
+xFade = \cf3 Slew\cf0 .ar(newG < 0.5, 500, 500);\
+\
+phaseA = \cf3 Phasor\cf0 .ar(newG < 0.5, \cf3 MouseY\cf0 .kr(3, 1)*rate, 0, \cf3 BufFrames\cf0 .ir(bufNum), phaseG);\
+phaseB = \cf3 Phasor\cf0 .ar(newG >= 0.5, \cf3 MouseY\cf0 .kr(3, 1)*rate, 0, \cf3 BufFrames\cf0 .ir(bufNum), phaseG);\
+\
+outputA = \cf3 BufRd\cf0 .ar(1, bufNum, phaseA, 1, 4) * xFade;\
+outputB = \cf3 BufRd\cf0 .ar(1, bufNum, phaseB, 1, 4) * (1-xFade);\
+\
+output = \cf3 Pan2\cf0 .ar(outputA + outputB);\
+\cf3 Out\cf0 .ar(outBus, output);\
+\}, [\cf3 nil\cf0 , \cf3 nil\cf0 , \cf5 \\ir\cf0 , \cf3 nil\cf0 , \cf5 \\tr\cf0 , \cf5 \\tr\cf0 , \cf3 nil\cf0 , \cf3 nil\cf0 ]).send(s)\cf6 //.play(s, [\\bufNum, ~sBuffer.bufnum])\cf0 \
+);\
+\
+\
+s.sync(c);\
+\
+\
+\
+\cf6 // Synth.new(\\GrainSampler, [\\outBus, 0, \\amp, 1.0, \\bufNum, ~sBuffer.bufnum]);\cf0 \
+\
+(\
+~beatNum = 4;\
+~sBpm = 60 * ~beatNum / (~sBuffer.numFrames / ~sBuffer.sampleRate);\
+~bpm = 180;\
+\
+~msg = \cf3 List\cf0 .new;\
+~synth = \cf3 Synth\cf0 .basicNew(\cf5 \\GrainSampler\cf0 );\
+\
+~msg.add(\
+~synth.newMsg(\cf3 nil\cf0 , [\cf5 \\outBus\cf0 , 0, \cf5 \\amp\cf0 , 1.0, \cf5 \\bufNum\cf0 , ~sBuffer.bufnum, \cf5 \\rate\cf0 , ~bpm/~sBpm])\
+);\
+\
+\
+~beatPos = 0;\
+\
+~pLength = 4;\
+~pNow = 0;\
+~pType = 0;\
+~lPoint = 0;\
+\
+~task = \cf3 Task\cf0 (\{\
+\
+\cf3 inf\cf0 .do\{\cf3 |i|\cf0 \
+\
+if(~pNow >= ~pLength)\{\
+\
+~pTypeProb = [3, 1, 3, 3, 2];\
+\
+ ~pTypeProb = ~pTypeProb * (switch(i%8,\
+0, \{[1.5, 0, 1, 1, 1]\}) ? 1);\
+\
+if(i%2==1)\{~pTypeProb = [1] \};\
+\
+~pType = ~pTypeProb.normalizeSum.windex;\
+\
+~pNow = 0;\
+\};\
+\
+\
+switch(~pType, \
+\
+0,\{\
+~beatPos = i;\
+~pLength = [2, 4].choose;\
+\},\
+\
+1,\{\
+if(~pNow==0)\{~lPoint = i\};\
+~beatPos = ~lPoint;\
+~pLength = [2, 4].wchoose([2, 1].normalizeSum);\
+\},\
+\
+2,\{\
+if(~pNow==0)\{~lPoint = i\};\
+~beatPos = i - ~lPoint % 2 + ~lPoint;\
+~pLength = [4, 6, 8].wchoose([2, 2, 1].normalizeSum);\
+\},\
+\
+3,\{\
+if(~pNow==0)\{~lPoint = i\};\
+~beatPos = i - ~lPoint % 3 + ~lPoint;\
+~pLength = [4, 6, 8].wchoose([3, 1, 2].normalizeSum);\
+\},\
+\
+4,\{\
+if(~pNow==0)\{~lPoint = i\};\
+~beatPos = i - ~lPoint % 4 + ~lPoint;\
+~pLength = [6, 8].wchoose([3, 2].normalizeSum);\
+\}\
+\
+);\
+\
+~pNow = ~pNow+1;\
+~beatPos = ~beatPos % 16;\
+\
+~msg.add(\
+~synth.setMsg(\cf5 \\grNew\cf0 , 1, \cf5 \\retr\cf0 , 1,\
+\cf5 \\pos\cf0 , ~beatPos/4 * (~sBuffer.numFrames / ~beatNum));\
+);\
+\
+\
+~msg !? \{s.listSendBundle(s.latency, ~msg)\};\
+~msg = \cf3 List\cf0 .new;\
+\
+(1/4).wait;\
+\}\
+\
+\}, \cf3 TempoClock\cf0 (~bpm/60)).start;\
+\
+\
+\
+)\
+\
+\};\
+)}

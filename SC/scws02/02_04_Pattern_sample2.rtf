@@ -1,0 +1,136 @@
+{\rtf1\ansi\ansicpg932\cocoartf1138\cocoasubrtf230
+{\fonttbl\f0\fnil\fcharset128 HiraKakuProN-W3;\f1\fnil\fcharset0 Monaco;\f2\froman\fcharset0 Times-Roman;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue191;\red96\green96\blue96;\red0\green115\blue0;
+\red191\green0\blue0;\red191\green0\blue0;\red0\green0\blue0;}
+\deftab560
+\pard\pardeftab560
+
+\f0\fs24 \cf2 SynthDef\cf0 (\cf3 \\\cf4 lsystem_sample\cf0 ,\{\cf2 arg\cf0  freq = 440, amp = 1,  pan=0,gate = 1;\
+\
+	\cf2 var\cf0  source;\
+		source = \cf2 Klang\cf0 .ar(`[ freq * [1,2,16,32],[1,1,0.2,0.1], \cf2 nil\cf0  ], 1, 0)\
+		\
+			* \cf2 EnvGen\cf0 .kr(Env.
+\f1\fs18 adsr(
+\f2\fs24 0.001, 0.4, 0.4, 1
+\f1\fs18 ),
+\f0\fs24  gate, doneAction: 2) ;\
+\
+	\cf2 Out\cf0 .ar(0, \cf2 Pan2\cf0 .ar(source* amp, pan))\
+\
+\}).store;\
+\
+\
+\'81\'45\'83\'8a\'83\'93\'83\'66\'83\'93\'83\'7d\'83\'43\'83\'84\'81\'5b\'83\'56\'83\'58\'83\'65\'83\'80\'81\'69L-System\'81\'6a\'82\'f0\'97\'70\'82\'a2\'82\'c4\'83\'70\'83\'5e\'81\'5b\'83\'93\'82\'f0\'82\'c2\'82\'ad\'82\'e9\'97\'e1\
+\pard\pardeftab720
+\cf0 \
+	// \'92\'5a\'82\'a2\'97\'e1\
+	(\
+	\cf2 var\cf0  degdict, durdict; \
+	\
+	degdict = \cf2 IdentityDictionary\cf0 [\
+	0 -> [0, 1, 2],\
+	1 -> [5]\
+	];\
+	\
+	\cf2 Pbind\cf0 (\
+	\cf4 \\instrument\cf0 , \cf4 \\lsystem_sample\cf0 ,\
+	\cf4 \\degree\cf0 , \cf2 Prewrite\cf0 ( \cf2 Pseq\cf0 ([0]), degdict, 3) ,  \cf5 // 0\'82\'a9\'82\'e7\'8e\'6e\'82\'df\'82\'e9\'81\'41\'82\'52\'92\'69\'8a\'4b\cf0 \
+	\cf4 \\dur\cf0 , \cf2 1,\cf0  \
+	\cf4 \\octave\cf0 , 6\
+	).play;\
+	)\
+	\
+	\
+	(\
+	\cf2 var\cf0  degdict, durdict; \
+	\
+	\
+	degdict = \cf2 IdentityDictionary\cf0 [\
+	0 -> [0, 1, 2],\
+	1 -> [0, 2],\
+	2 -> [3, 2],\
+	3 -> [0, 3, \\, 4],\
+	4 -> [5, 4, 2],\
+	5 -> [8, 7, 6, 7, 3],\
+	\\ -> [\\, 0, \\]\
+	];\
+	\
+	durdict = \cf2 IdentityDictionary\cf0 [\
+	0.5 -> [0.25, 0.5, 0.25],\
+	1.0 -> [0.5, 0.125, 0.125, 0.25],\
+	0.25 -> [1.0, 0.5],\
+	0.125 -> [0.25, 0.25, 0.25]\
+	];\
+	\
+	\cf2 Pbind\cf0 (\
+	\cf4 \\instrument\cf0 , \cf4 \\lsystem_sample\cf0 ,\
+	\cf4 \\degree\cf0 , \cf2 Prewrite\cf0 ( \cf2 Pseq\cf0 ([0]), degdict, 6) + [-7, 0, 2],  \cf5 // 0\'82\'a9\'82\'e7\'8e\'6e\'82\'df\'82\'e9\'81\'416\'92\'69\'8a\'4b\'82\'dc\'82\'c5\cf0 \
+	\cf4 \\dur\cf0 , \cf2 Prewrite\cf0 ( \cf2 Pseq\cf0 ([0.5]), durdict, 6), \cf5 // 0.5\'82\'a9\'82\'e7\'8e\'6e\'82\'df\'82\'e9\cf0 \
+	\cf4 \\pan\cf0 , \cf2 Prand\cf0 ([-0.2, 0.2, 0], \cf2 inf\cf0 ),\
+	\cf4 \\octave\cf0 , 6,\
+	\cf4 \\amp\cf0 , 0.2\
+	).play;\
+	)\
+	\
+\cf6 //////////////////////////////////////////////////////////////////\cf7 \
+\cf0 	\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf5 // L-System\'82\'c5\'83\'4a\'83\'93\'83\'67\'81\'5b\'83\'8b\'8f\'57\'8d\'87\'82\'f0\'8d\'ec\'82\'e9\cf0 \
+(	\cf5 //rewriteString\'82\'c5\'83\'4a\'83\'93\'83\'67\'81\'5b\'83\'8b\'8f\'57\'8d\'87\'82\'f0\'8d\'ec\'82\'e9\cf0 \
+	x = \cf3 "A"\cf0 ;\
+	\
+	3.do(\{\
+		x = x.rewriteString([\
+		\cf3 "A"\cf0  -> \cf3 "ABA"\cf0 ,\
+		\cf3 "B"\cf0  -> \cf3 "BBB"\cf0 \
+		]);\
+	\});\
+	\
+	x.postln;\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720
+\cf0 )\
+\
+(	\cf5 //\'8d\'ec\'82\'c1\'82\'bd\'8f\'57\'8d\'87\'82\'f0\'8c\'b3\'82\'c9\'83\'70\'83\'5e\'81\'5b\'83\'93\'82\'f0\'90\'b6\'90\'ac\cf0 \
+	\cf2 var\cf0  pattern, routine;\
+	\
+	pattern = \cf2 Pseq\cf0 ( x, \cf2 inf\cf0  ).asStream;\
+	\
+	\cf5 //SynthDef\'82\'cc\'93\'6f\'98\'5e\cf0 \
+	\cf2 SynthDef\cf0 ( \cf3 "clack"\cf0 , \{ \cf2 arg\cf0  out = 0; \
+\pard\pardeftab560
+\cf0 		\cf2 Out\cf0 .ar( 0, \
+			\cf2 ClipNoise\cf0 .ar(0.3).dup\
+			* \cf2 EnvGen\cf0 .ar( \cf2 Env\cf0 .perc( 0, 0.05, 1, -4 ), doneAction:2)\
+		);\
+	\}).store;\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720
+\cf0 	\cf2 SynthDef\cf0 ( \cf3 "kick"\cf0 , \{\
+		\cf2 var\cf0  freq;\
+		freq = \cf2 XLine\cf0 .kr( 1200, 40, 0.03 );\
+		\cf2 Out\cf0 .ar( 0,\
+			\cf2 SinOsc\cf0 .ar( freq, 0, 0.3 ).dup\
+			* \cf2 EnvGen\cf0 .ar( \cf2 Env\cf0 .perc( 0, 0.1, 1, -3 ), doneAction:2)\
+		);\
+\pard\pardeftab560
+\cf0 	\}).store;\
+	\
+	\cf5 //Pattern\'82\'cc\'92\'e8\'8b\'60\'82\'b5\'82\'c4\'8d\'c4\'90\'b6\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720
+\cf0 	routine = \cf2 Routine\cf0  \{\
+\pard\pardeftab560
+\cf0 		(x.size * 8).do(\{\
+			\cf2 var\cf0  value;\
+			value = pattern.next.asString;\
+			value.postln;\
+			value.switch(\
+				\cf3 "A"\cf0 ,\{ \cf2 Synth\cf0 .new( \cf3 "clack"\cf0  ) \},\
+				\cf3 "B"\cf0 ,\{ \cf2 Synth\cf0 .new( \cf3 "kick"\cf0  ) \}\
+			);\
+			0.125.wait;\
+		\});\
+	\}.play;\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720
+\cf0 )}

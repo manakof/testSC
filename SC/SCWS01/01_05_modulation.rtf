@@ -1,0 +1,340 @@
+{\rtf1\ansi\ansicpg932\cocoartf1138\cocoasubrtf230
+{\fonttbl\f0\fnil\fcharset128 HiraKakuProN-W3;\f1\fnil\fcharset0 Monaco;\f2\fnil\fcharset0 LucidaGrande;
+}
+{\colortbl;\red255\green255\blue255;\red191\green0\blue0;\red0\green0\blue191;\red0\green115\blue0;
+\red28\green74\blue255;\red96\green96\blue96;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs24 \cf2 // SuperCollider workshop at WOMB LOUNGE 2012\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f1 \cf0 \
+\pard\pardeftab720
+\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0 \cf0 \'83\'82\'83\'57\'83\'85\'83\'8c\'81\'5b\'83\'56\'83\'87\'83\'93
+\f1 \
+\pard\pardeftab720
+
+\f0 \cf0 \'83\'49\'83\'56\'83\'8c\'81\'5b\'83\'5e\'82\'cc\'8e\'fc\'94\'67\'90\'94\'81\'69\'89\'b9\'82\'cc\'8d\'82\'82\'b3\'81\'6a\'82\'e2\'90\'55\'95\'9d\'81\'69\'89\'b9\'82\'cc\'91\'e5\'82\'ab\'82\'b3\'81\'6a\'82\'c9\'81\'41\'91\'bc\'82\'cc\'83\'49\'83\'56\'83\'8c\'81\'5b\'83\'5e\'82\'f0\'8e\'67\'82\'c1\'82\'c4\'8e\'9e\'8a\'d4\'93\'49\'82\'c8\'95\'cf\'89\'bb\'82\'f0\'97\'5e\'82\'a6\'82\'e9\'8e\'96\'82\'c5\'81\'41\'82\'e6\'82\'e8\'95\'a1\'8e\'47\'82\'c8\'89\'b9\'90\'46\'82\'f0\'82\'c2\'82\'ad\'82\'e9\'82\'b1\'82\'c6\'82\'aa\'82\'c5\'82\'ab\'82\'dc\'82\'b7\'81\'42\'82\'b1\'82\'ea\'82\'cd\'83\'82\'83\'57\'83\'85\'83\'8c\'81\'5b\'83\'56\'83\'87\'83\'93\'82\'c6\'8c\'c4\'82\'ce\'82\'ea\'82\'e9\'8e\'e8\'96\'40\'82\'c5\'82\'b7\'81\'42\'82\'dc\'82\'b8\'82\'cd\'81\'41\'8e\'fc\'94\'67\'90\'94\'82\'f0\'97\'68\'82\'e7\'82\'b7
+\f1 \cf3 FM
+\f0 \cf0 \'81\'69
+\f1 frequency modulation
+\f0 \'81\'6a\'8d\'87\'90\'ac\'82\'f0\'82\'b5\'82\'c4\'82\'dd\'82\'dc\'82\'b5\'82\'e5\'82\'a4\'81\'42
+\f1 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+\cf2 //////////////////////////////////////////////////////////////////////////////////////////////////////	\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f2 \cf0 1. 
+\f0 \'89\'b9\'82\'cc\'8d\'82\'82\'b3\'82\'cc\'8e\'fc\'94\'67\'90\'94\'82\'f0\'83\'82\'83\'57\'83\'85\'83\'8c\'81\'5b\'83\'67\'82\'b7\'82\'e9
+\f1 \
+\
+\pard\pardeftab560
+\cf0 	\cf2 // 
+\f0 \'95\'81\'92\'ca\'82\'cc\'83\'54\'83\'43\'83\'93\'94\'67
+\f1 \cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+\cf0 	\cf3 SynthDef\cf0 (\cf4 \\fm_test0\cf0 ,\
+		\{ \cf3 arg\cf0  freq = 440, amp = 0.5, pan = 0;\
+			\cf3 var\cf0  source;\
+			source =  \cf3 SinOsc\cf0 .ar(freq);  \
+			source = \cf3 Pan2\cf0 .ar(source, pan);\
+			\cf3 Out\cf0 .ar(0, source * amp);\
+	\}).play;\
+	\
+\pard\pardeftab560
+\cf0 	\cf2 // 
+\f0 \'95\'81\'92\'ca\'82\'cc\'83\'54\'83\'43\'83\'93\'94\'67\'82\'cc\'89\'b9\'82\'cc\'8d\'82\'82\'b3\'82\'f0\'83\'6d\'83\'52\'83\'4d\'83\'8a\'94\'67\'82\'c5\'82\'e4\'82\'e7\'82\'b7\'81\'42
+\f1 \cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+\cf0 	\cf3 SynthDef\cf0 (\cf4 \\fm_test1\cf0 ,\
+		\{ \cf3 arg\cf0  freq = 440, freq2 = 400, amp = 0.5, pan = 0;\
+			\cf3 var\cf0  source;\
+			source =  \cf3 SinOsc\cf0 .ar(\cf3 LFSaw\cf0 .kr(1, 0, freq, freq2));  \cf2 // SinOsc
+\f0 \'82\'cc
+\f1 freq
+\f0 \'95\'94\'95\'aa\'82\'c9
+\f1 Saw
+\f0 \'82\'f0\'93\'fc\'82\'ea\'82\'e9
+\f1 \cf0 \
+			source = \cf3 Pan2\cf0 .ar(source, pan);\
+			\cf3 Out\cf0 .ar(0, source * amp);\
+	\}).play;	\
+	\
+\pard\pardeftab560
+\cf0 	\cf2 // 
+\f0 \'95\'81\'92\'ca\'82\'cc\'83\'54\'83\'43\'83\'93\'94\'67\'82\'cc\'89\'b9\'82\'cc\'8d\'82\'82\'b3\'82\'f0\'83\'70\'83\'8b\'83\'58\'94\'67\'82\'c5\'91\'81\'82\'ad\'82\'e4\'82\'e7\'82\'b7\'81\'42
+\f1 \cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+\cf0 	\cf3 SynthDef\cf0 (\cf4 \\fm_test2\cf0 ,\
+		\{ \cf3 arg\cf0  freq = 800, freq2 = 800, amp = 0.5, pan = 0;\
+			\cf3 var\cf0  source;\
+			source =  \cf3 SinOsc\cf0 .ar(\cf3 LFPulse\cf0 .kr(10, 0, 0.5, freq, freq2));   \cf2 // SinOsc
+\f0 \'82\'cc
+\f1 freq
+\f0 \'95\'94\'95\'aa\'82\'c9
+\f1 Pulse
+\f0 \'82\'f0\'93\'fc\'82\'ea\'82\'e9
+\f1 \cf0 \
+			source = \cf3 Pan2\cf0 .ar(source, pan);\
+			\cf3 Out\cf0 .ar(0, source * amp);\
+	\}).play;\
+\
+\pard\pardeftab560
+\cf0 	\cf2 // 
+\f0 \'95\'81\'92\'ca\'82\'cc\'83\'54\'83\'43\'83\'93\'94\'67\'82\'cc\'89\'b9\'82\'cc\'8d\'82\'82\'b3\'82\'f0\'83\'70\'83\'8b\'83\'58\'94\'67\'82\'c5\'91\'ac\'82\'ad\'82\'e4\'82\'e7\'82\'b7\'81\'42\'83\'70\'83\'8b\'83\'58\'94\'67\'82\'cc\'92\'6c\'82\'f0
+\f1 XLine
+\f0 \'82\'c5\'95\'cf\'89\'bb\'82\'b3\'82\'b9\'82\'e9
+\f1 \cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+\cf0 	\cf3 SynthDef\cf0 (\cf4 \\fm_test3\cf0 ,\
+		\{ \cf3 arg\cf0  freq = 800, freq2 = 800, amp = 0.5, pan = 0;\
+			\cf3 var\cf0  source;\
+			source =  \cf3 SinOsc\cf0 .ar(\cf3 LFPulse\cf0 .kr(10, 0, 0.5, freq, \cf3 XLine\cf0 .kr(100,2000,1)));   \cf2 // SinOsc
+\f0 \'82\'cc
+\f1 freq
+\f0 \'95\'94\'95\'aa\'82\'c9
+\f1 Saw
+\f0 \'82\'f0\'93\'fc\'82\'ea\'82\'e9
+\f1 \cf0 \
+			source = \cf3 Pan2\cf0 .ar(source, pan);\
+			\cf3 Out\cf0 .ar(0, source * amp);\
+	\}).play;\
+\
+\pard\pardeftab560
+\cf0 	\cf2 // 
+\f0 \'95\'81\'92\'ca\'82\'cc\'83\'54\'83\'43\'83\'93\'94\'67\'82\'cc\'89\'b9\'82\'cc\'8d\'82\'82\'b3\'82\'f0\'83\'70\'83\'8b\'83\'58\'94\'67\'82\'c5\'8d\'82\'91\'ac\'82\'c9\'82\'e4\'82\'e7\'82\'b7\'81\'42\'83\'70\'83\'8b\'83\'58\'94\'67\'82\'cc\'92\'6c\'82\'f0
+\f1 XLine
+\f0 \'82\'c5\'95\'cf\'89\'bb\'82\'b3\'82\'b9\'82\'e9
+\f1 \cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+\cf0 	\cf3 SynthDef\cf0 (\cf4 \\fm_test4\cf0 ,\
+		\{ \cf3 arg\cf0  freq = 800, freq2 = 800, amp = 0.5, pan = 0;\
+			\cf3 var\cf0  source;\
+			source =  \cf3 SinOsc\cf0 .ar(\cf3 LFPulse\cf0 .kr(10, 0, 0.5, freq, \cf3 XLine\cf0 .kr(100,2000,1)));   \cf2 // SinOsc
+\f0 \'82\'cc
+\f1 freq
+\f0 \'95\'94\'95\'aa\'82\'c9
+\f1 Saw
+\f0 \'82\'f0\'93\'fc\'82\'ea\'82\'e9
+\f1 \cf0 \
+			source = \cf3 Pan2\cf0 .ar(source, pan);\
+			\cf3 Out\cf0 .ar(0, source * amp);\
+	\}).play;\
+\pard\pardeftab720
+\cf0 \
+\pard\pardeftab560
+\cf0 	\cf2 // 
+\f0 \'95\'81\'92\'ca\'82\'cc\'83\'54\'83\'43\'83\'93\'94\'67\'82\'cc\'89\'b9\'82\'cc\'8d\'82\'82\'b3\'82\'f0\'83\'70\'83\'8b\'83\'58\'94\'67\'82\'c5\'8d\'82\'91\'ac\'82\'c9\'82\'e4\'82\'e7\'82\'b7\'81\'42\'83\'70\'83\'8b\'83\'58\'94\'67\'82\'cc\'92\'6c\'82\'f0
+\f1 Saw
+\f0 \'94\'67\'82\'c5\'95\'cf\'89\'bb\'82\'b3\'82\'b9\'82\'e9
+\f1 \cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+\cf0 	\cf3 SynthDef\cf0 (\cf4 \\fm_test5\cf0 ,\
+		\{ \cf3 arg\cf0  freq = 800, freq2 = 800, amp = 0.5, pan = 0;\
+			\cf3 var\cf0  source;\
+			source =  \cf3 SinOsc\cf0 .ar(\cf3 LFPulse\cf0 .kr(10, 0, 0.5, freq, \cf3 LFSaw\cf0 .kr(0.5,0,1000,500)));   \cf2 // SinOsc
+\f0 \'82\'cc
+\f1 freq
+\f0 \'95\'94\'95\'aa\'82\'c9
+\f1 Saw
+\f0 \'82\'f0\'93\'fc\'82\'ea\'82\'e9
+\f1 \cf0 \
+			source = \cf3 Pan2\cf0 .ar(source, pan);\
+			\cf3 Out\cf0 .ar(0, source * amp);\
+	\}).play;\
+\
+\cf2 //////////////////////////////////////////////////////////////////////////////////////////////////////	\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+
+\f2 \cf0 2.
+\f0 \'89\'b9\'82\'cc\'91\'e5\'82\'ab\'82\'b3\'82\'f0\'83\'82\'83\'57\'83\'85\'83\'8c\'81\'5b\'83\'67\'82\'b7\'82\'e9
+\f1 \
+\pard\pardeftab720
+
+\f0 \cf0 \'8e\'9f\'82\'cd\'81\'41\'90\'55\'95\'9d\'82\'f0\'95\'cf\'89\'bb\'82\'b3\'82\'b9\'82\'e9\'81\'41
+\f1 \cf3 AM
+\f0 \cf0 \'81\'69
+\f1 amplitude modulation
+\f0 \'81\'6a\'82\'c5\'82\'b7\'81\'42
+\f1 \
+\
+\pard\pardeftab560
+\cf0 	\cf2 // 
+\f0 \'95\'81\'92\'ca\'82\'cc\'83\'54\'83\'43\'83\'93\'94\'67
+\f1 \cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+\cf0 	\cf3 SynthDef\cf0 (\cf4 \\am_test0\cf0 ,\
+		\{ \cf3 arg\cf0  freq = 440, amp = 0.5, pan = 0;\
+			\cf3 var\cf0  source;\
+			source =  \cf3 SinOsc\cf0 .ar(freq);  \
+			source = \cf3 Pan2\cf0 .ar(source, pan);\
+			\cf3 Out\cf0 .ar(0, source * amp);\
+	\}).play;\
+	\
+\pard\pardeftab560
+\cf0 	\cf2 // 
+\f0 \'95\'81\'92\'ca\'82\'cc\'83\'54\'83\'43\'83\'93\'94\'67\'82\'cc\'89\'b9\'97\'ca\'82\'f0\'83\'6d\'83\'52\'83\'4d\'83\'8a\'94\'67\'82\'c5\'82\'e4\'82\'e7\'82\'b7\'81\'42
+\f1 \cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+\cf0 	\cf3 SynthDef\cf0 (\cf4 \\am_test1\cf0 ,\
+		\{ \cf3 arg\cf0  freq = 440, freq2 = 400, amp = 0.5, pan = 0;\
+			\cf3 var\cf0  source;\
+			source =  \cf3 SinOsc\cf0 .ar(freq, 0, \cf3 LFSaw\cf0 .kr(1, 0, 0.5, 0.5));  \cf2 // SinOsc
+\f0 \'82\'cc
+\f1 amp
+\f0 \'95\'94\'95\'aa\'82\'c9
+\f1 Saw
+\f0 \'82\'f0\'93\'fc\'82\'ea\'82\'e9
+\f1 \cf0 \
+			source = \cf3 Pan2\cf0 .ar(source, pan);\
+			\cf3 Out\cf0 .ar(0, source * amp);\
+	\}).play;	\
+	\
+\pard\pardeftab560
+\cf0 	\cf2 // 
+\f0 \'95\'81\'92\'ca\'82\'cc\'83\'54\'83\'43\'83\'93\'94\'67\'82\'cc\'89\'b9\'97\'ca\'82\'f0\'83\'70\'83\'8b\'83\'58\'94\'67\'82\'c5\'82\'e4\'82\'e7\'82\'b7\'81\'42
+\f1 \cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+\cf0 	\cf3 SynthDef\cf0 (\cf4 \\am_test2\cf0 ,\
+		\{ \cf3 arg\cf0  freq = 800, freq2 = 800, amp = 0.5, pan = 0;\
+			\cf3 var\cf0  source;\
+			source =  \cf3 SinOsc\cf0 .ar(freq, 0, \cf3 LFPulse\cf0 .kr(8, 0, 0.5));   \cf2 // SinOsc
+\f0 \'82\'cc
+\f1 freq
+\f0 \'95\'94\'95\'aa\'82\'c9
+\f1 Pulse
+\f0 \'82\'f0\'93\'fc\'82\'ea\'82\'e9
+\f1 \cf0 \
+			source = \cf3 Pan2\cf0 .ar(source, pan);\
+			\cf3 Out\cf0 .ar(0, source * amp);\
+	\}).play;\
+\
+\cf2 //////////////////////////////////////////////////////////////////////////////////////////////////////	\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+
+\f2 \cf0 3.
+\f0 \'89\'c1\'8e\'5a\'82\'b7\'82\'e9\
+\'95\'a1\'90\'94\'82\'cc\'89\'b9\'82\'f0\'88\'ea\'8f\'8f\'82\'c9\'96\'c2\'82\'e7\'82\'b7
+\f1 \
+\
+\pard\pardeftab560
+\cf0 	\cf2 // 
+\f0 \'95\'81\'92\'ca\'82\'cc\'83\'54\'83\'43\'83\'93\'94\'67
+\f1 \cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+\cf0 	\cf3 SynthDef\cf0 (\cf4 \\add_test0\cf0 ,\
+		\{ \cf3 arg\cf0  freq = 440, amp = 0.5, pan = 0;\
+			\cf3 var\cf0  source;\
+			source =  \cf3 Saw\cf0 .ar(freq) + \cf3 SinOsc\cf0 .ar(freq/2);  \cf2 // Saw
+\f0 \'82\'c6\'92\'e1\'82\'a2
+\f1 SinOsc
+\f0 \'82\'f0\'88\'ea\'8f\'8f\'82\'c9\'96\'c2\'82\'e7\'82\'b7
+\f1 \cf0 \
+			source = \cf3 Pan2\cf0 .ar(source, pan);\
+			\cf3 Out\cf0 .ar(0, source * amp);\
+	\}).play;\
+	\
+\
+\
+\cf2 //////////////////////////////////////////////////////////////////////////////////////////////////////	\cf0 \
+\cf2 //////////////////////////////////////////////////////////////////////////////////////////////////////	\cf0 \
+\cf2 //////////////////////////////////////////////////////////////////////////////////////////////////////	\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+
+\f2 \cf0 4. 
+\f1 \cf3 SynthDef
+\f0 \cf0 \'82\'f0\'82\'c2\'82\'ad\'82\'c1\'82\'c4\'82\'dd\'82\'e6\'82\'a4\'81\'42
+\f1 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+\cf2 //////////////////////////////////////////////////////////////////////////////////////////////////////	\cf0 \
+\cf2 //////////////////////////////////////////////////////////////////////////////////////////////////////	\cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f0 \cf5 /////////////////////////////////////////////////////////////////////////////////////////////\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 \'81\'79\'82\'e2\'82\'c1\'82\'c4\'82\'dd\'82\'e6\'82\'a4\'81\'7a 
+\f1 \cf3 SynthDef
+\f0 \cf0 \'82\'f0\'82\'c2\'82\'ad\'82\'c1\'82\'c4\'82\'dd\'82\'dc\'82\'b5\'82\'e5\'82\'a4\'81\'42\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f2 \cf0 \uc0\u9632 
+\f0 \'83\'7c\'83\'43\'83\'93\'83\'67
+\f1 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+
+\f0 \cf0 \'81\'45\'89\'b9\'8c\'b9\'82\'c9\'82\'c8\'82\'e9\'83\'49\'83\'56\'83\'8c\'81\'5b\'83\'5e\'82\'f0\'91\'49\'82\'d4
+\f1 \
+
+\f0 \'81\'45\'83\'74\'83\'42\'83\'8b\'83\'5e\'81\'5b\'82\'e2\'83\'47\'83\'93\'83\'94\'83\'46\'83\'8d\'81\'5b\'83\'76\'82\'f0\'82\'a9\'82\'af\'82\'e9
+\f1 \
+
+\f0 \'81\'45\'8c\'e3\'82\'c5\'8e\'67\'82\'a2\'82\'bd\'82\'a2\'83\'70\'83\'89\'83\'81\'81\'5b\'83\'5e\'82\'f0
+\f1 \cf3 arg
+\f0 \cf0 \'82\'c9\'82\'b5\'82\'c4\'82\'a8\'82\'ad
+\f1 \
+\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+\cf3 SynthDef\cf0 (\cf6 "perc"\cf0 , \{\
+\
+	\cf3 arg\cf0  freq=200, amp=1.0, rq = 0.2;\
+	\cf3 var\cf0  source;\
+	source = \cf3 RHPF\cf0 .ar(\cf3 Pulse\cf0 .ar(freq, 0.2), \cf3 Line\cf0 .kr(1000,10000,0.5) , rq)\
+\pard\pardeftab560\sl280
+\cf0 	* \cf3 EnvGen\cf0 .kr(\cf3 Env\cf0 .perc(0.001,0.22,1,-6), doneAction:2) * 0.5;\
+	\cf3 Out\cf0 .ar(0, \cf3 Pan2\cf0 .ar(source*amp, 0));\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+\cf0 \}).play;\
+\
+\
+\pard\pardeftab720
+\cf3 SynthDef\cf0 (\cf4 \\rbt_bass\cf0 ,\{\
+	\cf3 arg\cf0  amp=0.5,  freq=100, filtfreq1 = 10000, filtfreq2=8000, filtertime=0.1, releaseTime= 0.4, pan =0;\
+		\cf3 var\cf0  source;\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+\cf0 			source= \cf3 RLPF\cf0 .ar(\
+						\cf3 LFPulse\cf0 .ar(freq+1, 0, 0.4) + \cf3 SinOsc\cf0 .ar(freq*0.5,2pi,0.6),
+\f0  \cf2 // RLPF\'82\'cc\'89\'b9\'8c\'b9
+\f1 \cf0 \
+						\cf3 Line\cf0 .kr(filtfreq1, filtfreq2, filtertime), 0.7)
+\f0 \'81\'40\cf2 // RLPF\'82\'cc\'83\'74\'83\'42\'83\'8b\'83\'5e\'8e\'fc\'94\'67\'90\'94\'82\'c6rq
+\f1 \cf0 \
+			 * \cf3 EnvGen\cf0 .ar(\cf3 Env\cf0 ([0,1,1,0],[0.001,releaseTime,0.03]),doneAction:2);		\
+\pard\pardeftab720
+\cf0 		\cf3 Out\cf0 .ar(0,\cf3 Pan2\cf0 .ar(source*amp,  pan ))\
+\}).play;\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+\cf3 SynthDef\cf0 (\cf4 \\dtk_pulse_chord\cf0 , \{\
+	\cf3 arg\cf0  gate= 1, freq= 800,  amp= 0.5, pan=0;\
+	\cf3 var\cf0  source;\
+	source = \cf3 Pulse\cf0 .ar(freq, \cf3 XLine\cf0 .kr(0.1,0.5,0.1)) // 
+\f0 \'83\'70\'83\'8b\'83\'58\'94\'67\'82\'cc\'95\'9d\'82\'f0Xline\'82\'c5\'95\'cf\'89\'bb\'82\'b3\'82\'b9\'82\'e9
+\f1 \
+	 * \cf3 EnvGen\cf0 .kr(\cf3 Env\cf0 .new([0,1,1,0],[0.0001,0.25,0.05]), gate, doneAction:2);\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+\cf0 	\cf3 Out\cf0 .ar([0,1], \cf3 Pan2\cf0 .ar(source * amp, pan));\
+	\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+\cf0 \}).play;\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+\cf0 \
+\pard\pardeftab560
+\cf3 SynthDef\cf0 (\cf4 \\dtk_hats\cf0 ,\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab160\pardirnatural
+\cf0 	\{\cf3 arg\cf0  freq = 600,  amp = 1.0, releaseTime=0.1, rq =0.8, pan =0;\
+	\cf3 var\cf0  source;\
+	source = \cf3 RHPF\cf0 .ar(\cf3 WhiteNoise\cf0 .ar(1), freq, rq)\
+	* \cf3 EnvGen\cf0 .ar(\cf3 Env\cf0 .perc(0.0001, releaseTime, 1, -4), 1.0, doneAction: 2);\
+	\cf3 Out\cf0 .ar(0, \cf3 Pan2\cf0 .ar(source * amp, pan))\
+\}).play;\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\pardirnatural
+\cf0 \
+\
+	}
